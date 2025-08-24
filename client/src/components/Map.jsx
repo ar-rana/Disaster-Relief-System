@@ -39,7 +39,7 @@ const Map = () => {
     <div className="h-[100%] w-[100%] p-0">
       <div className="flex m-0.5">
         <button
-          className="px-4 bg-amber-200 border rounded-sm font-semibold active:border-white"
+          className="px-4 bg-teal-100 border rounded-sm font-semibold active:border-white"
           onClick={returnToHome}
         >
           Reset (Return to home)
