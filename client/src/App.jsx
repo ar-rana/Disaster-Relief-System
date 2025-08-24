@@ -1,15 +1,15 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navigation from "./pages/Navigation";
-import Map from "./components/Map";
 import Home from "./pages/Home";
-import Navbar from "./components/Navbar";
+import Login from "./pages/Login";
 
 function App() {
   return (
     <div className="h-screen">
       <BrowserRouter>
         <Routes>
+          <Route path="/loginandregister" element={<Login />}></Route>
           <Route path="/navigation" element={<Navigation />}></Route>
           <Route path="/" element={<Home />}></Route>
         </Routes>
