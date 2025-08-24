@@ -1,15 +1,18 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navigation from "./pages/Navigation";
 import Map from "./components/Map";
-import ReliefMenu from "./components/ReliefMenu";
-import AssignedMenu from "./components/AssignedMenu";
 
 function App() {
   return (
-      <div className="w-[100%]">
-        {/* <Map /> */}
-        {/* <ReliefMenu /> */}
-        {/* <AssignedMenu /> */}
-      </div>
+    <div className="h-screen">
+      {/* <Map /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/navigation" element={<Navigation />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 

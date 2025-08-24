@@ -22,12 +22,12 @@ const Map = () => {
         className="w-[100%] h-[95%]"
       >
         <TileLayer
-          attribution="© OpenStreetMap contributors"
+          attribution="© OpenStreetMap"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <Marker className="fa fa-home" position={[home[0], home[1]]}>
           <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
+            Headquarters
           </Popup>
         </Marker>
       </MapContainer>
@@ -36,10 +36,10 @@ const Map = () => {
   );
 
   return (
-    <div className="h-[100%] w-[100%] p-0">
-      <div className="flex m-0.5">
+    <div className="h-[100%] w-[100%] p-0 bg-white">
+      <div className="flex p-0.5">
         <button
-          className="px-4 bg-teal-100 border rounded-sm font-semibold active:border-white"
+          className="px-4 bg-amber-100 border rounded-sm font-semibold active:border-white"
           onClick={returnToHome}
         >
           Reset (Return to home)

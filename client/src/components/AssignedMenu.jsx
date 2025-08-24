@@ -2,6 +2,7 @@ import React from 'react';
 const data = [
   {
     id: 0,
+    criticality: "basic",
     lat: "27.99",
     lon: "77.456",
     desc: "just testing the systems",
@@ -10,6 +11,7 @@ const data = [
   },
   {
     id: 1,
+    criticality: "high",
     lat: "28.43",
     lon: "77.1234",
     desc: "my god im dead, save im dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveme save me save me save me save me save me save me save me save mesave me",
@@ -18,6 +20,7 @@ const data = [
   },
   {
     id: 2,
+    criticality: "high",
     lat: "28.3132",
     lon: "77.351",
     desc: "my god he is dead",
@@ -26,6 +29,7 @@ const data = [
   },,
   {
     id: 1,
+    criticality: "high",
     lat: "28.43",
     lon: "77.1234",
     desc: "my god im dead, save im dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveme save me save me save me save me save me save me save me save mesave me",
@@ -34,6 +38,7 @@ const data = [
   },
   {
     id: 2,
+    criticality: "very_high",
     lat: "28.3132",
     lon: "77.351",
     desc: "my god he is dead",
@@ -42,6 +47,7 @@ const data = [
   },
   {
     id: 1,
+    criticality: "high",
     lat: "28.43",
     lon: "77.1234",
     desc: "my god im dead, save im dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveme save me save me save me save me save me save me save me save mesave me",
@@ -50,6 +56,7 @@ const data = [
   },
   {
     id: 2,
+    criticality: "moderate",
     lat: "28.3132",
     lon: "77.351",
     desc: "my god he is dead",
@@ -60,7 +67,7 @@ const data = [
 
 const AssignedMenu = () => {
   return (
-    <div className="max-w-[85%] border-2 h-44 border-teal-200 bg-gray-100 p-4 rounded-md overflow-x-scroll overflow-y-hidden">
+    <div className="w-full border-2 h-48 border-teal-200 bg-gray-100 p-4 rounded-md overflow-x-scroll overflow-y-hidden">
       <div className="flex gap-2 p-1">
         {data.map((data) => {
           return (
@@ -68,7 +75,8 @@ const AssignedMenu = () => {
               <div class="flex">
                 <div>
                   <p title={data.desc} class="font-bold">{data.name} | Id: {data.id}</p>
-                  <p class="text-sm font-medium">Contact: {data.POC}</p>
+                  <p class="text-sm font-bold">Contact: {data.POC}</p>
+                  <p className="font-semibold text-sm">Criticality: {data.criticality}</p>
                   <p title={data.desc} class="text-sm truncate overflow-hidden w-[240px]">{data.desc}</p>
                   <button className='bg-teal-300 font-medium px-2 rounded-lg mt-2'>Move Here</button>
                 </div>
