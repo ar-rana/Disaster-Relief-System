@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 const data = [
   {
     id: 0,
@@ -58,18 +58,19 @@ const data = [
   },
 ];
 
-const ReliefMenu = () => {
+const AssignedMenu = () => {
   return (
-    <div className="max-w-[95%] border-2 h-[90vh] border-amber-200 bg-gray-100 p-4 rounded-md z-10">
-      <div className="bg-white flex flex-col gap-3 p-3 rounded-md overflow-y-scroll h-full">
-        <p className="font-bold text-xl text-amber-600 sticky top-0 bg-white w-auto z-10 p-3">Relief Required</p>
+    <div className="max-w-[85%] border-2 h-44 border-teal-200 bg-gray-100 p-4 rounded-md overflow-x-scroll overflow-y-hidden">
+      <div className="flex gap-2 p-1">
         {data.map((data) => {
           return (
-            <div className="bg-amber-50 border-t-4 border-amber-200 rounded-b text-teal-900 px-3 py-2 shadow-md w-[98%] self-center">
-              <div className="flex">
+            <div class="bg-teal-50 border-t-4 border-teal-200 rounded-b text-teal-900 p-3 shadow-md w-3xs">
+              <div class="flex">
                 <div>
-                  <p className="font-bold">{data.name}</p>
-                  <p className="text-sm">{data.desc}</p>
+                  <p title={data.desc} class="font-bold">{data.name} | Id: {data.id}</p>
+                  <p class="text-sm font-medium">Contact: {data.POC}</p>
+                  <p title={data.desc} class="text-sm truncate overflow-hidden w-[240px]">{data.desc}</p>
+                  <button className='bg-teal-300 font-medium px-2 rounded-lg mt-2'>Move Here</button>
                 </div>
               </div>
             </div>
@@ -77,7 +78,7 @@ const ReliefMenu = () => {
         })}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ReliefMenu;
+export default AssignedMenu
