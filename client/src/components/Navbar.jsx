@@ -21,6 +21,12 @@ const Navbar = () => {
         >
           Login
         </a>
+        <a
+          className="px-4 py-1 bg-white text-[#33A1E0] font-bold rounded-md hover:bg-[#33A1E0] hover:text-white"
+          href="/dashboard"
+        >
+          DashBoard
+        </a>
         <button
           className="px-4 py-1 cursor-pointer bg-white text-[#33A1E0] font-bold rounded-md hover:bg-[#33A1E0] hover:text-white"
           onClick={() => setOpen((prev) => !prev)}
@@ -28,7 +34,7 @@ const Navbar = () => {
           Request Relief
         </button>
       </div>
-      <img className="fixed top-[-10] w-full z-[-1]" src={nav_wave} alt="nav" />
+      <img className="fixed top-[0] w-full z-[-1]" src={nav_wave} alt="nav" />
       <RequestAid isOpen={isOpen} setOpen={setOpen} />
     </div>
   );

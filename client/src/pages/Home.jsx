@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Questionaries from "../components/Questionaries";
+import logo from "../assets/mountain_logo.svg";
 
 const Home = () => {
   return (
@@ -10,7 +11,7 @@ const Home = () => {
       <div className="min-h-screen bg-gray-50 flex flex-col">
         <div className="flex flex-col items-center justify-center py-16 bg-white shadow-sm">
           <img
-            src="/mountain_logo.svg"
+            src={logo}
             alt="Disaster Relief Logo"
             className="w-20 mb-6"
           />
