@@ -1,10 +1,13 @@
 package com.example.server.model;
 
+import com.example.server.model.enums.UserType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -17,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Data
-public class Provider {
+public class User {
 
     @Id
     private String contact;
@@ -29,13 +32,20 @@ public class Provider {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private UserType role;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private HeadQuarters headQuarters;
+
     @Override
     public String toString() {
-        return "Provider {" +
+        return "User {" +
                 "contact='" + contact + '\'' +
                 ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", role=" + role +
                 '}';
     }
 }

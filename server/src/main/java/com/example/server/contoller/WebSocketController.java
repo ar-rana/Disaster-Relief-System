@@ -17,4 +17,10 @@ public class WebSocketController {
     public ResponseEntity<ReliefReq> whiteboardDraw() {
         return ResponseEntity.ok().build();
     }
+
+//    @MessageMapping("/reliefdata/")
+    @SendTo("/navigation/**")
+    public ResponseEntity<ReliefReq> whiteboardDraw(@RequestBody ReliefReq item) {
+        return ResponseEntity.ok(item);
+    }
 }
