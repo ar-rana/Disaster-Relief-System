@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../../public/mountain_logo.svg";
+import logo from "../assets/mountain_logo.svg";
 import nav_wave from "../assets/nav_wave2.svg";
 import RequestAid from "./RequestAid";
 
@@ -17,7 +17,7 @@ const Navbar = () => {
       <div className="p-2 h-full w-1/2 flex gap-2 items-center justify-end">
         <a
           className="px-4 py-1 bg-white text-[#33A1E0] font-bold rounded-md hover:bg-[#33A1E0] hover:text-white"
-          href="/loginandregister"
+          href="/login"
         >
           Login
         </a>

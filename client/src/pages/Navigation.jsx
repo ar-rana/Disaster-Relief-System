@@ -15,7 +15,7 @@ const Navigation = () => {
         </div>
       </div>
       <div className="w-[93%] flex flex-col ml-auto mr-auto">
-        <p className="text-2xl font-bold text-teal-500 m-2">
+        <p className="text-2xl font-bold text-[#33A1E0] m-2">
           Assigned Relief Points
         </p>
         <div className="self-center w-full flex">

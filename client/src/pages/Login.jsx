@@ -3,15 +3,9 @@ import LoginAndRegForm from "../components/LoginAndRegForm";
 import Navbar from "../components/Navbar";
 
 const Login = () => {
-  const [user, setUser] = useState("");
-  const [pass, setPass] = useState("");
-  const [contact, setContact] = useState("");
-  const [warning, setWarning] = useState("");
-  const [confirmPass, setConfirmPass] = useState("");
 
-  const changeFormState = (e) => {
+  const loginHandler = (e) => {
     e.preventDefault();
-    setSignUp((prev) => !prev);
   };
 
   return (
@@ -19,11 +13,7 @@ const Login = () => {
       <Navbar />
       <LoginAndRegForm
         signUp={false}
-        setUser={setUser}
-        setPass={setPass}
-        warning={warning}
-        setConfirmPass={setConfirmPass}
-        setContact={setContact}
+        formHandler={loginHandler}
       />
     </div>
   );

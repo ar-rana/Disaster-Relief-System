@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import ReliefinfoCard from "./ReliefinfoCard";
 const data = [
   {
     id: 0,
@@ -26,7 +27,7 @@ const data = [
     desc: "my god he is dead",
     POC: "78905238",
     name: "street dog",
-  },,
+  },
   {
     id: 1,
     criticality: "high",
@@ -67,26 +68,16 @@ const data = [
 
 const AssignedMenu = () => {
   return (
-    <div className="w-full border-2 h-48 border-teal-200 bg-gray-100 p-4 rounded-md overflow-x-scroll overflow-y-hidden">
+    <div className="w-full border-2 h-48 border-[#33A1E0] bg-gray-100 p-4 rounded-md overflow-x-scroll overflow-y-hidden">
       <div className="flex gap-2 p-1">
         {data.map((data) => {
           return (
-            <div class="bg-teal-50 border-t-4 border-teal-200 rounded-b text-teal-900 p-3 shadow-md w-3xs">
-              <div class="flex">
-                <div>
-                  <p title={data.desc} class="font-bold">{data.name} | Id: {data.id}</p>
-                  <p class="text-sm font-bold">Contact: {data.POC}</p>
-                  <p className="font-semibold text-sm">Criticality: {data.criticality}</p>
-                  <p title={data.desc} class="text-sm truncate overflow-hidden w-[240px]">{data.desc}</p>
-                  <button className='bg-teal-300 font-medium px-2 rounded-lg mt-2'>Move Here</button>
-                </div>
-              </div>
-            </div>
+            <ReliefinfoCard req={data} nav={true} />
           );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AssignedMenu
+export default AssignedMenu;
