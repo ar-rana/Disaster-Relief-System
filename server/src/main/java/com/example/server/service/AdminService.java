@@ -25,15 +25,19 @@ public class AdminService {
     private RedisCacheService cache;
 
     @Autowired
-    private HeadQuarterRepository hqRepository;
+    private HQService hqService;
 
     public String createUser(String name, String username, String password) {
         User existingUser = userService.getUserByUsername(username);
         if (existingUser != null) {
             return "User Already Exists!!";
         }
+//        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+//        User controler = userService.getUserByUsername(user);
         User admin = new User(username, name, username, password);
         admin.setRole(UserType.ADMIN);
+//        int hqId = controler.getHeadQuarters().getHqId();
+//        admin.setHeadQuarters(getHeadquartersById(hqId));
         User savedUser = repository.save(admin);
         cache.setCache(Keys.key(Keys.PROVIDER, savedUser.getUsername()), savedUser, 120);
 
@@ -42,9 +46,12 @@ public class AdminService {
 
     public String transferProvider(String contact, int hqId) {
         User provider = userService.getUserByUsername(contact);
-        HeadQuarters hq = getHeadquartersById(hqId);
+        HeadQuarters hq = hqService.getHeadquartersById(hqId);
         if (hq == null) {
             return "HeadQuarters do not exits!!";
+        }
+        if (provider == null) {
+            return "Enter correct identification for provider!!";
         }
         provider.setHeadQuarters(hq);
         User newProvider = repository.save(provider);
@@ -59,27 +66,5 @@ public class AdminService {
         return "";
     }
 
-    public HeadQuarters getHeadquartersById(int hqId) {
-        HeadQuarters item = cache.getCache(Keys.key(Keys.HQ, hqId), HeadQuarters.class);
-        if (item != null) {
-            return item;
-        }
-        Optional<HeadQuarters> hq = hqRepository.findById(hqId);
-        if (hq.isPresent()) {
-            cache.setCache(Keys.key(Keys.HQ, hq.get().getHqId()), hq.get(), 120);
-            return hq.get();
-        }
-        return null;
-    }
 
-    public String updateHQResources(int additionalResources, int hqId) {
-        HeadQuarters hq = getHeadquartersById(hqId);
-        if (hq == null) {
-            return "HeadQuarters do not exits!";
-        }
-        hq.setResourceUnits(hq.getResourceUnits() + additionalResources);
-        hqRepository.save(hq);
-
-        return "new resources allocated successfully!!";
-    }
 }

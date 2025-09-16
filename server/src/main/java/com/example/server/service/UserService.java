@@ -25,7 +25,11 @@ public class UserService {
         if (existingUser != null) {
             return "User Already Exists!!";
         }
+        //        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+//        User controler = userService.getUserByUsername(user);
         User provider = new User(username, name, username, password); // username is also the number
+        //        int hqId = controler.getHeadQuarters().getHqId();
+//        admin.setHeadQuarters(getHeadquartersById(hqId));
         User savedUser = repository.save(provider);
         cache.setCache(Keys.key(Keys.PROVIDER, savedUser.getUsername()), savedUser, 120);
 

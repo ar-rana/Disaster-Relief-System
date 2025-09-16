@@ -38,7 +38,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     private HeadQuarters headQuarters;
 
     public User(String contact, String name, String username, String password) {
@@ -46,16 +47,6 @@ public class User {
         this.name = name;
         this.username = username;
         this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "User {" +
-                "contact='" + contact + '\'' +
-                ", name='" + name + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                '}';
+        this.role = UserType.PROVIDER;
     }
 }
