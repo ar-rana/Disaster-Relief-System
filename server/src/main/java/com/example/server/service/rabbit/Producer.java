@@ -40,7 +40,7 @@ public class Producer {
 
     }
 
-    public int getPriority(Criticality pq) {
+    private int getPriority(Criticality pq) {
         return switch (pq) {
             case VERY_HIGH -> 3;
             case HIGH -> 2;
