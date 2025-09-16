@@ -30,10 +30,13 @@ public class HeadQuarters {
     @Column(nullable = false)
     private double latitude;
 
+    private Integer resourceUnits;
+
     public HeadQuarters(String address, double longitude, double latitude) {
         Address = address;
         this.longitude = longitude;
         this.latitude = latitude;
+        resourceUnits = 0;
     }
 
     @Override

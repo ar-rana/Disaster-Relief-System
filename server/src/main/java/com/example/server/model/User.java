@@ -8,6 +8,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -20,6 +22,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Data
+@Table(name = "users")
 public class User {
 
     @Id
@@ -37,6 +40,13 @@ public class User {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private HeadQuarters headQuarters;
+
+    public User(String contact, String name, String username, String password) {
+        this.contact = contact;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+    }
 
     @Override
     public String toString() {
