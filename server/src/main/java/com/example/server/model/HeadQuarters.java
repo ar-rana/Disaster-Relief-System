@@ -41,11 +41,12 @@ public class HeadQuarters {
 
     @Override
     public String toString() {
-        return "HeadQuarters {" +
+        return "HeadQuarters{" +
                 "hqId=" + hqId +
                 ", Address='" + Address + '\'' +
                 ", longitude=" + longitude +
                 ", latitude=" + latitude +
+                ", resourceUnits=" + resourceUnits +
                 '}';
     }
 }
