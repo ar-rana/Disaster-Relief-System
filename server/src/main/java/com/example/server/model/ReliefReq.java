@@ -26,7 +26,7 @@ public class ReliefReq {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer uid;
+    private Long uid;
 
     private String name;
     private String poc;

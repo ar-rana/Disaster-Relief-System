@@ -45,4 +45,10 @@ public class HQService {
 
         return "new resources allocated successfully!!";
     }
+
+    public String createHeadquarters(double longitude, double latitude, String address, int resource) {
+        HeadQuarters hq = new HeadQuarters(address, longitude, latitude, resource);
+        hqRepository.save(hq);
+        return "NEW HQ added Successfully";
+    }
 }

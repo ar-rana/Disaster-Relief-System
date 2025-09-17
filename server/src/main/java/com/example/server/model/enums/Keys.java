@@ -7,7 +7,7 @@ public enum Keys {
     ADMIN("amin/%s");
     private final String prefixKey;
     Keys(String key) {
-        this.prefixKey =key;
+        this.prefixKey = key;
     }
 
     public String getPrefixKey() {

@@ -2,15 +2,12 @@ package com.example.server.contoller;
 
 import java.util.Map;
 
-import com.example.server.model.HeadQuarters;
-import com.example.server.model.User;
 import com.example.server.service.AdminService;
 import com.example.server.service.HQService;
 import com.example.server.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -101,7 +98,7 @@ public class AdminController {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/update/hq")
+    @PutMapping("/update/hq")
     public ResponseEntity<String> transferProvider(@RequestBody Map<String, String> item) {
         log.info("Transfer request received: {}", item.toString());
         String hqId = item.get("hqId");
@@ -113,9 +110,9 @@ public class AdminController {
         return ResponseEntity.ok(res);
     }
 
-    @PostMapping("/update/hq")
-    public ResponseEntity<String> changePassword(@RequestBody String username) {
-        log.info("change password req by: {}", username);
+    @PutMapping("/alter/pass")
+    public ResponseEntity<String> changePassword(@RequestBody String newPass) {
+        log.info("change password req by: {}", newPass);
         return ResponseEntity.ok("");
     }
 }

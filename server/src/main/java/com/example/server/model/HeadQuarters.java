@@ -24,7 +24,7 @@ public class HeadQuarters {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int hqId;
 
-    private String Address;
+    private String address;
     @Column(nullable = false)
     private double longitude;
     @Column(nullable = false)
@@ -33,17 +33,24 @@ public class HeadQuarters {
     private Integer resourceUnits;
 
     public HeadQuarters(String address, double longitude, double latitude) {
-        Address = address;
+        this.address = address;
         this.longitude = longitude;
         this.latitude = latitude;
-        resourceUnits = 0;
+        this.resourceUnits = 0;
+    }
+
+    public HeadQuarters(String address, double longitude, double latitude, Integer resource) {
+        address = address;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.resourceUnits = resource;
     }
 
     @Override
     public String toString() {
         return "HeadQuarters{" +
                 "hqId=" + hqId +
-                ", Address='" + Address + '\'' +
+                ", Address='" + address + '\'' +
                 ", longitude=" + longitude +
                 ", latitude=" + latitude +
                 ", resourceUnits=" + resourceUnits +
