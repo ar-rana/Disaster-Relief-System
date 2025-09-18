@@ -4,6 +4,7 @@ public enum Keys {
     RELIEF("relief/%s"),
     PROVIDER("provider/%s"),
     HQ("hq/%s"),
+    STATUS("status/%s"),
     ADMIN("amin/%s");
     private final String prefixKey;
     Keys(String key) {

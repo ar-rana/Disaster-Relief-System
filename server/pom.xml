@@ -42,16 +42,27 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+<!--		WEBSOCKET-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 
+<!--		MAIN DB-->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!--   FireBase     -->
+	<dependency>
+    	<groupId>com.google.firebase</groupId>
+    	<artifactId>firebase-admin</artifactId>
+    	<version>9.2.0</version>
+	</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -62,6 +73,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 <!--		RABBITMQ-->
 		<dependency>
     		<groupId>org.springframework.boot</groupId>
