@@ -19,6 +19,13 @@ const faqs = [
       `Anyone affected by a disaster can request help through our platform, using the 'Request Relief' button at the top right corner, after filling a small 
       necessary form, your mobile will be verified and the aid will be on its way.`,
   },
+  {
+    question: "How to use the platform?",
+    answer:
+      `If you are a seeeker wanting AID, then simply click on the top-right corner on 'Request Relief' button and fill the necessary information, you contact number 
+      will be verified via OTP and after that your AID will be on its way. You can go to the 'Dashboard' and view the all you previous requests 
+      and also check the status in detail.`,
+  },
 ];
 
 const Questionaries = () => {

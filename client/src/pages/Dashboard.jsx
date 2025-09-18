@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import LoginAndRegForm from "../components/LoginAndRegForm.jsx";
 import Navbar from "../components/Navbar.jsx";
-import ReliefInfocard from "../components/ReliefinfoCard.jsx";
 import UserDashboard from "../components/UserDashboard.jsx";
 import AdminDashboard from "../components/AdminDashboard.jsx";
 
