@@ -14,13 +14,13 @@ public class WebSocketController {
 
     @MessageMapping("/reliefdata/{providerId}")
     @SendTo("/navigation/{providerId}")
-    public ResponseEntity<ReliefReq> whiteboardDraw() {
+    public ResponseEntity<ReliefReq> sendData() {
         return ResponseEntity.ok().build();
     }
 
-//    @MessageMapping("/reliefdata/")
-    @SendTo("/navigation/**")
-    public ResponseEntity<ReliefReq> whiteboardDraw(@RequestBody ReliefReq item) {
+    @MessageMapping("/reliefdata/")
+    @SendTo("/navigation/*")
+    public ResponseEntity<ReliefReq> navigation(@RequestBody ReliefReq item) {
         return ResponseEntity.ok(item);
     }
 }
