@@ -1,8 +1,8 @@
 package com.example.server.model.enums;
 
 public enum ReliefStatus {
-    TRUE,
-    FALSE,
+    CREATED,
     IN_PROGRESS,
-    SUSPENDED
+    SUSPENDED,
+    COMPLETED
 }

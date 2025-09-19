@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.example.server.model.DTOs.ReliefDTO;
 import com.example.server.model.ReliefReq;
+import com.example.server.model.ReliefReqStatus;
 import com.example.server.model.enums.Criticality;
 import com.example.server.service.ReliefService;
 import com.example.server.service.rabbit.Producer;
@@ -55,7 +56,7 @@ public class ReliefController {
         } catch (NumberFormatException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("invalid reliefId");
         }
-        ReliefReq req = reliefService.getRequestDetail(reliefUid);
+        ReliefReqStatus req = reliefService.getRequestDetail(reliefUid);
         if (req == null) {
             log.error("Relief does not exist: {}", reliefUid);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("invalid reliefId");

@@ -1,14 +1,14 @@
 package com.example.server.service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.example.server.model.DTOs.ReliefDTO;
 import com.example.server.model.ReliefReq;
-import com.example.server.model.User;
+import com.example.server.model.ReliefReqStatus;
 import com.example.server.model.enums.Keys;
+import com.example.server.model.enums.ReliefStatus;
 import com.example.server.repository.ReliefRequestRepository;
+import com.example.server.repository.ReliefStatusRepository;
 import com.example.server.service.redis.RedisCacheService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,9 @@ public class ReliefService {
 
     @Autowired
     private ReliefRequestRepository reliefRepository;
+
+    @Autowired
+    private ReliefStatusRepository statusRepository;
 
     @Autowired
     private RedisCacheService cache;
@@ -36,6 +39,10 @@ public class ReliefService {
 
         ReliefReq savedReq = reliefRepository.save(relief);
         cache.setCache(Keys.key(Keys.RELIEF, savedReq.getUid()), savedReq, 240);
+
+        ReliefReqStatus reliefStatus = new ReliefReqStatus(savedReq.getUid(), ReliefStatus.CREATED);
+        ReliefReqStatus savedStatus = statusRepository.save(reliefStatus);
+        cache.setCache(Keys.key(Keys.STATUS, savedStatus.getReliefId()), savedStatus, 240);
 
         String key = Keys.key(Keys.PROVIDER, dto.getPoc());
         List<ReliefReq> item = cache.getCache(key, new TypeReference<List<ReliefReq>>() {});
@@ -63,7 +70,13 @@ public class ReliefService {
         return reliefs;
     }
 
-    public ReliefReq getRequestDetail(Long reliefId) {
-        return reliefRepository.findById(reliefId).orElse(null);
+    // ReliefReqStatus
+    public ReliefReqStatus getRequestDetail(Long reliefId) {
+        return statusRepository.findById(reliefId).orElse(null);
+    }
+
+    // update ReliefReqStatus
+    public ReliefReqStatus updateReliefStatus(ReliefReqStatus req) {
+        return statusRepository.save(req);
     }
 }
