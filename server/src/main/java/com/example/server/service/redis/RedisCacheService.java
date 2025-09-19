@@ -26,30 +26,30 @@ public class RedisCacheService {
     public <T> T getCache(String key, Class<T> entityClass) {
         Object o = redisTemplate.opsForValue().get(key);
         if (o == null) {
-            log.info("Object Null in Cache with key: {}", key);
+            log.info("[CACHE_S] Object Null in Cache with key: {}", key);
             return null;
         }
         ObjectMapper mapper = new ObjectMapper();
-        log.info("Object as String from Cache for: {}", entityClass);
+        log.info("[CACHE_S] Object as String from Cache for: {}", entityClass);
         try {
             return mapper.readValue((String) o, entityClass);
         } catch (Exception ex) {
-            log.error("Failed to PARSE OBJECT: " + ex.getMessage());
+            log.error("[CACHE_S] Failed to PARSE OBJECT: {}", ex.getMessage());
         }
         return null;
     }
     public <T> T getCache(String key, TypeReference<T> typeReference) {
         Object o = redisTemplate.opsForValue().get(key);
         if (o == null) {
-            log.info("Object Null in Cache with key: {}", key);
+            log.info("[CACHE_S] Object Null in Cache with key: {}", key);
             return null;
         }
         ObjectMapper mapper = new ObjectMapper();
-        log.info("Object as String from Cache for: {}", typeReference);
+        log.info("[CACHE_S] Object as String from Cache for: {}", typeReference);
         try {
             return mapper.readValue((String) o, typeReference);
         } catch (JsonProcessingException ex) {
-            log.error("Failed to PARSE OBJECT: " + ex.getMessage());
+            log.error("[CACHE_S] Failed to PARSE OBJECT: {}", ex.getMessage());
         }
         return null;
     }
@@ -59,8 +59,9 @@ public class RedisCacheService {
             String jsonValue = new ObjectMapper().writeValueAsString(o);
             redisTemplate.opsForValue().set(key, jsonValue, ttl, TimeUnit.MINUTES);
         } catch (Exception ex) {
-            log.info("Failed to SAVE in cache: " + ex.getMessage());
+            log.info("[CACHE_S] Failed to SAVE in cache: {}", ex.getMessage());
         }
+        log.info("[CACHE_S] ADDED: {}", key);
     }
 
     public void deleteCache(String key) {
@@ -69,6 +70,6 @@ public class RedisCacheService {
         } catch (Exception ex) {
             log.error("Failed to DELETE cache: " + ex.getMessage());
         }
-        log.warn("DELETED " + key + " from cache");
+        log.warn("[CACHE_S] DELETED: {}", key);
     }
 }

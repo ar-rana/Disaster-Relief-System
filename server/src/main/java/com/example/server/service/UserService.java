@@ -48,7 +48,7 @@ public class UserService {
         String key = Keys.key(Keys.PROVIDER, username);
         User item = cache.getCache(key, User.class);
         if (item != null) {
-            log.info("getUserByUsername from cache: {}", item);
+            log.info("[CACHE] getUserByUsername from cache: {}", item);
             return item;
         }
         Optional<User> user = repository.findById(username);

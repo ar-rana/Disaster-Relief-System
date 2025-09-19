@@ -25,7 +25,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Map<String, String> map) {
-        log.info("Login req: {}", map.toString());
+        log.info("[USER] Login req: {}", map.toString());
         String username = map.get("username");
         String password = map.get("password");
         if (username == null || password == null) {
@@ -37,7 +37,7 @@ public class UserController {
 
     @GetMapping("/logout/{username}")
     public String logout(@PathVariable String username) {
-        log.info("Logout req: {}", username);
+        log.info("[USER] Logout req: {}", username);
         return "Logged Out user!";
     }
 

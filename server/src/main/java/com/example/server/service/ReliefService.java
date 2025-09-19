@@ -47,18 +47,20 @@ public class ReliefService {
         String key = Keys.key(Keys.PROVIDER, dto.getPoc());
         List<ReliefReq> item = cache.getCache(key, new TypeReference<List<ReliefReq>>() {});
         if (item == null) {
-            log.info("No List<ReliefReq> yet for: {}", key);
+            log.info("[RELIEF_S] No List<ReliefReq> yet for: {}", key);
         } else {
             item.add(savedReq);
             cache.setCache(key, item, 60);
         }
+
+        // SEND TO RABBITMQ PRODUCER
     }
 
     public List<ReliefReq> getAllRequests(String contact) {
         String key = Keys.key(Keys.PROVIDER, contact);
         List<ReliefReq> item = cache.getCache(key, new TypeReference<List<ReliefReq>>() {});
         if (item != null) {
-            log.info("getUserByUsername from cache: {}", item);
+            log.info("[CACHE] getUserByUsername from cache: {}", item);
             return item;
         }
         List<ReliefReq> reliefs = reliefRepository.findByPoc(contact);

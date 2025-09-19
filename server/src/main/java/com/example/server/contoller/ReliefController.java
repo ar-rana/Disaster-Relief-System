@@ -7,6 +7,7 @@ import com.example.server.model.DTOs.ReliefDTO;
 import com.example.server.model.ReliefReq;
 import com.example.server.model.ReliefReqStatus;
 import com.example.server.model.enums.Criticality;
+import com.example.server.service.CommunicationService;
 import com.example.server.service.ReliefService;
 import com.example.server.service.rabbit.Producer;
 import lombok.extern.slf4j.Slf4j;
@@ -29,16 +30,20 @@ public class ReliefController {
     @Autowired
     private ReliefService reliefService;
 
+    @Autowired
+    private CommunicationService comms;
+
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody ReliefDTO item) {
-        log.info("Relief request received: {}", item.toString());
+        log.info("[RELIEF] Relief request received: {}", item.toString());
         reliefService.createRelief(item);
+        // OTP from Comms.
         return ResponseEntity.ok("we have received you request we will soon be sending help");
     }
 
     @GetMapping("/getstatus/all/{contact}")
     public ResponseEntity<List<ReliefReq>> getAllRequests(@RequestParam String contact) {
-        log.info("Getting all requests for: {}", contact);
+        log.info("[RELIEF] Getting all requests for: {}", contact);
 
         List<ReliefReq> res = reliefService.getAllRequests(contact);
         if (res == null || res.isEmpty()) {
@@ -49,7 +54,7 @@ public class ReliefController {
 
     @GetMapping("/getstatus/{reliefId}")
     public ResponseEntity<?> getRequestDetail(@RequestBody String reliefId) {
-        log.info("Request access to Relief: {}", reliefId);
+        log.info("[RELIEF] Relief Details: {}", reliefId);
         long reliefUid;
         try {
             reliefUid = Long.parseLong(reliefId);

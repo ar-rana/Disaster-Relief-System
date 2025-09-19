@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,7 +54,7 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("enter complete data");
         }
 
-        log.info("Creating new HQ with longitude={}, latitude={}, address={}",
+        log.info("[ADMIN] Creating new HQ with longitude={}, latitude={}, address={}",
                 longitude, latitude, address);
 
         String res = hqService.createHeadquarters(Double.parseDouble(longitude),
@@ -80,7 +81,12 @@ public class AdminController {
 
     @PostMapping("/add/admin")
     public ResponseEntity<String> addAdmin(@RequestBody Map<String, String> item) {
-        log.info("Login req: {}", item.toString());
+        String secret = item.get("AdminSecret");
+        if (!secret.equals(hqSecretKey)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED USER FOR HQ ACCESS");
+        }
+
+        log.info("[ADMIN] creating admin: {}", item.toString());
         String username = item.get("username");
         String password = item.get("password");
         String name = item.get("name");
@@ -93,14 +99,14 @@ public class AdminController {
 
     @PutMapping("/update/hq/resources")
     public ResponseEntity<String> updateHqResources(@RequestBody Integer allocation) {
-        log.info("HQ allocation received: {}", allocation);
+        log.info("[ADMIN] HQ allocation received: {}", allocation);
         String res = hqService.updateHQResources(allocation);
         return ResponseEntity.ok(res);
     }
 
     @PutMapping("/update/hq")
     public ResponseEntity<String> transferProvider(@RequestBody Map<String, String> item) {
-        log.info("Transfer request received: {}", item.toString());
+        log.info("[ADMIN] Transfer request received: {}", item.toString());
         String hqId = item.get("hqId");
         String contact = item.get("contact");
         if (hqId == null || contact == null) {
@@ -112,7 +118,13 @@ public class AdminController {
 
     @PutMapping("/alter/pass")
     public ResponseEntity<String> changePassword(@RequestBody String newPass) {
-        log.info("change password req by: {}", newPass);
+        log.info("[ADMIN] change password req by: {}", newPass);
         return ResponseEntity.ok("");
+    }
+
+    @GetMapping("/verified")
+    public ResponseEntity<Boolean> authCheck() {
+        log.info("[ADMIN] verification req");
+        return ResponseEntity.ok(true);
     }
 }
