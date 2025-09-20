@@ -39,7 +39,7 @@ public class ProviderService {
 
     public void resolveRelief(ReliefStatusDTO request) {
         ReliefReqStatus status = new ReliefReqStatus(request.getReliefId(), ReliefStatus.COMPLETED);
-        status.setDesc(request.getDesc());
+        status.setDescription(request.getDesc());
         List<byte[]> lt = new ArrayList<>();
         for (MultipartFile file: request.getImages()) {
             try {
@@ -55,7 +55,7 @@ public class ProviderService {
 
     public void rejectRelief(ReliefStatusDTO request) {
         ReliefReqStatus status = new ReliefReqStatus(request.getReliefId(), ReliefStatus.SUSPENDED);
-        status.setDesc(request.getDesc());
+        status.setDescription(request.getDesc());
 
         reliefService.updateReliefStatus(status);
     }
@@ -83,7 +83,7 @@ public class ProviderService {
 
         ReliefReqStatus status = reliefService.getRequestDetail(request.getUid());
         status.setStatus(ReliefStatus.IN_PROGRESS);
-        status.setDesc("your relief has been assigned, help is on its way!!");
+        status.setDescription("your relief has been assigned, help is on its way!!");
         reliefService.updateReliefStatus(status);
 
         // send to user through WEBSOCKETS

@@ -38,8 +38,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType role;
 
-    @Column(nullable = false)
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private HeadQuarters headQuarters;
 
     public User(String contact, String name, String username, String password) {

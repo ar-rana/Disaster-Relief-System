@@ -32,10 +32,10 @@ public class Producer {
                         message.getMessageProperties().setPriority(priority);
                         return message;
                     });
-            log.info("Added DATA to PQ: {}", jsonValue);
+            log.info("[R_MQ-PRODUCER] Added DATA to PQ: {}", jsonValue);
         } catch (
                 JsonProcessingException e) {
-            log.error("ERROR parsing Relief data: {}", obj);
+            log.error("[R_MQ-PRODUCER] ERROR parsing Relief data: {}", obj);
         }
 
     }

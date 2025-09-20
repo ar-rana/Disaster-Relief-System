@@ -2,6 +2,7 @@ package com.example.server.contoller;
 
 import java.util.Map;
 
+import com.example.server.service.AIService;
 import com.example.server.service.AdminService;
 import com.example.server.service.HQService;
 import com.example.server.service.UserService;
@@ -126,5 +127,16 @@ public class AdminController {
     public ResponseEntity<Boolean> authCheck() {
         log.info("[ADMIN] verification req");
         return ResponseEntity.ok(true);
+    }
+
+    @Autowired
+    private AIService aiService;
+
+    @PostMapping("/ai")
+    public ResponseEntity<String> authCheck(@RequestBody Map<String, String> item) {
+        String req = item.get("req");
+        if (req == null || req.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("req missing");
+        String res = aiService.getCriticality(req);
+        return ResponseEntity.ok(res);
     }
 }

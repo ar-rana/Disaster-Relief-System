@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class FirebaseConfig {
 
     @Bean
-    public FirebaseApp firebaseConfig() throws IOException {
+    public FirebaseApp firebaseConfiguration() throws IOException {
         if (!FirebaseApp.getApps().isEmpty())
             return FirebaseApp.getInstance();
 
