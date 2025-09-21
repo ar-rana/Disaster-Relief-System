@@ -8,6 +8,8 @@ import com.example.server.repository.UserRepository;
 import com.example.server.service.redis.RedisCacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,17 +22,26 @@ public class UserService {
     @Autowired
     private RedisCacheService cache;
 
+    @Autowired
+    private HQService hqService;
+
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
     public String createUser(String name, String username, String password) {
         User existingUser = getUserByUsername(username);
         if (existingUser != null) {
             return "User Already Exists!!";
         }
-        //        String user = SecurityContextHolder.getContext().getAuthentication().getName();
-//        User controler = userService.getUserByUsername(user);
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        User controller = getUserByUsername(user);
+
         User provider = new User(username, name, username, password); // username is also the number
-        //        int hqId = controler.getHeadQuarters().getHqId();
-//        admin.setHeadQuarters(getHeadquartersById(hqId));
+        int hqId = controller.getHeadQuarters().getHqId();
+
+        controller.setHeadQuarters(hqService.getHeadquartersById(hqId));
+        provider.setPassword((encoder.encode(provider.getPassword())));
         User savedUser = repository.save(provider);
+
         cache.setCache(Keys.key(Keys.PROVIDER, savedUser.getUsername()), savedUser, 120);
 
         return "User registered Successfully";

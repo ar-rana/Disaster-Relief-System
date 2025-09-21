@@ -10,6 +10,8 @@ import com.example.server.repository.HeadQuarterRepository;
 import com.example.server.repository.UserRepository;
 import com.example.server.service.redis.RedisCacheService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,18 +29,24 @@ public class AdminService {
     @Autowired
     private HQService hqService;
 
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
     public String createUser(String name, String username, String password) {
         User existingUser = userService.getUserByUsername(username);
         if (existingUser != null) {
             return "User Already Exists!!";
         }
-//        String user = SecurityContextHolder.getContext().getAuthentication().getName();
-//        User controler = userService.getUserByUsername(user);
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        User controller = userService.getUserByUsername(user);
+
         User admin = new User(username, name, username, password);
         admin.setRole(UserType.ADMIN);
-//        int hqId = controler.getHeadQuarters().getHqId();
-//        admin.setHeadQuarters(getHeadquartersById(hqId));
+        int hqId = controller.getHeadQuarters().getHqId();
+
+        admin.setHeadQuarters(hqService.getHeadquartersById(hqId));
+        admin.setPassword((encoder.encode(admin.getPassword())));
         User savedUser = repository.save(admin);
+
         cache.setCache(Keys.key(Keys.PROVIDER, savedUser.getUsername()), savedUser, 120);
 
         return "Admin registered Successfully!!";

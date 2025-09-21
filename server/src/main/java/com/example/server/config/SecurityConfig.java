@@ -33,8 +33,7 @@ public class SecurityConfig {
         http.cors(customizer -> customizer.configurationSource(corsConfigurationSource))
             .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/auth/register", "/auth/login", "/verification/kyc/callback",
-                                "/chat/request").permitAll() // "verification/start/kyc"
+                        .requestMatchers("/request/**", "/user/login", "").permitAll() // "verification/start/kyc"
                         .anyRequest().authenticated()
                 ).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
