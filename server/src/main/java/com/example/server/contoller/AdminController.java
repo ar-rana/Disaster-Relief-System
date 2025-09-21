@@ -77,13 +77,14 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username, name, & password required");
         }
         String res = userService.createUser(name, username, password);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @PostMapping("/add/admin")
-    public ResponseEntity<String> addAdmin(@RequestBody Map<String, String> item) {
-        String secret = item.get("AdminSecret");
-        if (!secret.equals(hqSecretKey)) {
+    public ResponseEntity<String> addAdmin(
+            @RequestBody Map<String, String> item,
+            @RequestHeader(value = "x-admin-secret", required = true) String secret) {
+        if (!secret.equals(secretKey)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED USER FOR HQ ACCESS");
         }
 
@@ -95,7 +96,7 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username, name, & password required");
         }
         String res = adminService.createUser(name, username, password);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @PutMapping("/update/hq/resources")
@@ -121,12 +122,6 @@ public class AdminController {
     public ResponseEntity<String> changePassword(@RequestBody String newPass) {
         log.info("[ADMIN] change password req by: {}", newPass);
         return ResponseEntity.ok("");
-    }
-
-    @GetMapping("/verified")
-    public ResponseEntity<Boolean> authCheck() {
-        log.info("[ADMIN] verification req");
-        return ResponseEntity.ok(true);
     }
 
 //    @Autowired

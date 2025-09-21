@@ -4,10 +4,14 @@ import java.util.Optional;
 
 import com.example.server.model.User;
 import com.example.server.model.enums.Keys;
+import com.example.server.model.enums.UserType;
 import com.example.server.repository.UserRepository;
 import com.example.server.service.redis.RedisCacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,12 @@ public class UserService {
     @Autowired
     private HQService hqService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtService jwtService;
+
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public String createUser(String name, String username, String password) {
@@ -34,6 +44,9 @@ public class UserService {
         }
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         User controller = getUserByUsername(user);
+        if (controller.getRole() != UserType.ADMIN) {
+            return "unauthorized user";
+        }
 
         User provider = new User(username, name, username, password); // username is also the number
         int hqId = controller.getHeadQuarters().getHqId();
@@ -48,11 +61,14 @@ public class UserService {
     }
 
     public String login(String username, String password) {
-        User existingUser = getUserByUsername(username);
-        if (existingUser == null) {
-            return "User Does Not Exist!!";
-        }
-        return "";
+        User user = getUserByUsername(username);
+        if (user == null) return null;
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), password));
+
+        if(authentication.isAuthenticated())
+            return jwtService.generateToken(user.getUsername(), user.getRole());
+        else
+            return null;
     }
 
     public User getUserByUsername(String username) {

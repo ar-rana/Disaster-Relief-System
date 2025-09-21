@@ -31,14 +31,25 @@ public class UserController {
         if (username == null || password == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username & password required");
         }
+
         String res = userService.login(username, password);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+        if (res == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User does not exist");
+        } else {
+            return ResponseEntity.ok(res);
+        }
     }
 
     @GetMapping("/logout/{username}")
     public String logout(@PathVariable String username) {
         log.info("[USER] Logout req: {}", username);
         return "Logged Out user!";
+    }
+
+    @GetMapping("/verified")
+    public ResponseEntity<Boolean> authCheck() {
+        log.info("[ADMIN] verification req");
+        return ResponseEntity.ok(true);
     }
 
 }

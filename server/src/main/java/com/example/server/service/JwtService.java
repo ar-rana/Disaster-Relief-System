@@ -10,6 +10,7 @@ import java.util.function.Function;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import com.example.server.model.enums.UserType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -41,9 +42,10 @@ public class JwtService {
         }
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, UserType userType) {
 
         Map<String,Object> claims = new HashMap<String, Object>();
+        claims.put("role", userType);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -62,6 +64,11 @@ public class JwtService {
     public String extractUserName(String token) {
         // extract the username from jwt token
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public UserType extractRole(String token) {
+        String roleString = extractClaim(token, claims -> claims.get("role", String.class));
+        return UserType.valueOf(roleString);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {

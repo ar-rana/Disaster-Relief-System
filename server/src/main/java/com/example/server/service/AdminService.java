@@ -38,6 +38,9 @@ public class AdminService {
         }
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         User controller = userService.getUserByUsername(user);
+        if (controller.getRole() != UserType.ADMIN) {
+            return "unauthorized user";
+        }
 
         User admin = new User(username, name, username, password);
         admin.setRole(UserType.ADMIN);

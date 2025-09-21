@@ -2,6 +2,7 @@ package com.example.server.config;
 
 import java.io.IOException;
 
+import com.example.server.model.enums.UserType;
 import com.example.server.service.JwtService;
 import com.example.server.service.UserDetailsService;
 import jakarta.servlet.FilterChain;
@@ -33,18 +34,24 @@ public class JwtFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String userName = null;
+        UserType role = null;
         log.info("Request at: {}", request.getRequestURI());
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7); //removing "Bearer " to get token
             userName = jwtService.extractUserName(token);
         }
+        if (request.getRequestURI().contains("admin")
+                && jwtService.extractRole(token) != UserType.ADMIN) {
+            return;
+        }
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = context.getBean(UserDetailsService.class).loadUserByUsername(userName);
 
             if(jwtService.validateToken(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()); //creating UsernamePasswordAuthenticationToken token because at the end spring works with this
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()); //creating UsernamePasswordAuthenticationToken token because at the end spring works with this
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken); // setting validated jwt token to UsernamePasswordAuthenticationToken
             }
