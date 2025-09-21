@@ -129,14 +129,14 @@ public class AdminController {
         return ResponseEntity.ok(true);
     }
 
-    @Autowired
-    private AIService aiService;
-
-    @PostMapping("/ai")
-    public ResponseEntity<String> authCheck(@RequestBody Map<String, String> item) {
-        String req = item.get("req");
-        if (req == null || req.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("req missing");
-        String res = aiService.getCriticality(req);
-        return ResponseEntity.ok(res);
-    }
+//    @Autowired
+//    private AIService aiService;
+//
+//    @PostMapping("/ai")
+//    public ResponseEntity<String> authCheck(@RequestBody Map<String, String> item) {
+//        String req = item.get("req");
+//        if (req == null || req.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("req missing");
+//        String res = aiService.getCriticality(req);
+//        return ResponseEntity.ok(res);
+//    }
 }
