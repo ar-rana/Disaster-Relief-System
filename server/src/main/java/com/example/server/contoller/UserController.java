@@ -38,6 +38,8 @@ public class UserController {
         } else {
             return ResponseEntity.ok(res);
         }
+
+        // there will be redirection here DONT RESPOND JSON, DO REDIRECT
     }
 
     @GetMapping("/logout/{username}")

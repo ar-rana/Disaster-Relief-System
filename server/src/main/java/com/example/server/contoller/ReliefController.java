@@ -48,7 +48,7 @@ public class ReliefController {
 
         List<ReliefReq> res = reliefService.getAllRequests(contact);
         if (res == null || res.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(res);
+            return ResponseEntity.status(HttpStatus.OK).body(res);
         }
         return ResponseEntity.ok(res);
     }
@@ -59,7 +59,7 @@ public class ReliefController {
 
         ReliefReq res = reliefService.getReliefRequest(reliefId);
         if (res == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
         }
         return ResponseEntity.ok(res);
     }
@@ -76,7 +76,7 @@ public class ReliefController {
         ReliefReqStatus req = reliefService.getRequestDetail(reliefUid);
         if (req == null) {
             log.error("Relief does not exist: {}", reliefUid);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("invalid reliefId");
+            return ResponseEntity.status(HttpStatus.OK).body("invalid reliefId");
         }
         return ResponseEntity.ok(req);
     }
