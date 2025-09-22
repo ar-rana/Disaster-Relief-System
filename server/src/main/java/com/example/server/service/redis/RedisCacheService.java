@@ -30,8 +30,8 @@ public class RedisCacheService {
             return null;
         }
         ObjectMapper mapper = new ObjectMapper();
-        log.info("[CACHE_S] Object as String from Cache for: {}", entityClass);
         try {
+            log.info("[CACHE_S] Object in Cache: {}, with key: {}", o, key);
             return mapper.readValue((String) o, entityClass);
         } catch (Exception ex) {
             log.error("[CACHE_S] Failed to PARSE OBJECT: {}", ex.getMessage());
@@ -45,8 +45,8 @@ public class RedisCacheService {
             return null;
         }
         ObjectMapper mapper = new ObjectMapper();
-        log.info("[CACHE_S] Object as String from Cache for: {}", typeReference);
         try {
+            log.info("[CACHE_S] Object in Cache: {}, with key: {}", o, key);
             return mapper.readValue((String) o, typeReference);
         } catch (JsonProcessingException ex) {
             log.error("[CACHE_S] Failed to PARSE OBJECT: {}", ex.getMessage());

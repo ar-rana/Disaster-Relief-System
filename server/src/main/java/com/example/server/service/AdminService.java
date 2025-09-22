@@ -1,12 +1,9 @@
 package com.example.server.service;
 
-import java.util.Optional;
-
 import com.example.server.model.HeadQuarters;
 import com.example.server.model.User;
 import com.example.server.model.enums.Keys;
 import com.example.server.model.enums.UserType;
-import com.example.server.repository.HeadQuarterRepository;
 import com.example.server.repository.UserRepository;
 import com.example.server.service.redis.RedisCacheService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +47,7 @@ public class AdminService {
         admin.setPassword((encoder.encode(admin.getPassword())));
         User savedUser = repository.save(admin);
 
-        cache.setCache(Keys.key(Keys.PROVIDER, savedUser.getUsername()), savedUser, 120);
+        cache.setCache(Keys.key(Keys.USER, savedUser.getUsername()), savedUser, 120);
 
         return "Admin registered Successfully!!";
     }
@@ -66,15 +63,27 @@ public class AdminService {
         }
         provider.setHeadQuarters(hq);
         User newProvider = repository.save(provider);
-        cache.setCache(Keys.key(Keys.PROVIDER, newProvider.getUsername()), newProvider, 120);
+        cache.setCache(Keys.key(Keys.USER, newProvider.getUsername()), newProvider, 120);
 
-        return "Provider Updated Successfully";
+        return "Provider Updated Successfully, New HQ: " + newProvider.getHeadQuarters();
     }
 
     public String changePassword(String username, String password) {
         User admin = userService.getUserByUsername(username);
         // check if username matches Context.auth
         return "";
+    }
+
+    public User superUser(String username, String password, String name, Integer hqId) {
+        User admin = new User(username, name, username, password);
+        admin.setRole(UserType.ADMIN);
+
+        HeadQuarters hq = hqService.getHeadquartersById(hqId);
+
+        admin.setHeadQuarters(hq);
+        admin.setPassword((encoder.encode(admin.getPassword())));
+
+        return repository.save(admin);
     }
 
 

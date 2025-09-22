@@ -41,15 +41,16 @@ public class JwtFilter extends OncePerRequestFilter {
             token = authHeader.substring(7); //removing "Bearer " to get token
             userName = jwtService.extractUserName(token);
         }
-        if (request.getRequestURI().contains("admin")
-                && jwtService.extractRole(token) != UserType.ADMIN) {
-            return;
-        }
 
-        if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null){
+        if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = context.getBean(UserDetailsService.class).loadUserByUsername(userName);
 
-            if(jwtService.validateToken(token, userDetails)) {
+            if (request.getRequestURI().contains("admin")
+                    && jwtService.extractRole(token) != UserType.ADMIN) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+            if (jwtService.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()); //creating UsernamePasswordAuthenticationToken token because at the end spring works with this
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -57,6 +58,6 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        filterChain.doFilter(request,response);    //connecting the filter chain to move forward
+        filterChain.doFilter(request, response);    //connecting the filter chain to move forward
     }
 }

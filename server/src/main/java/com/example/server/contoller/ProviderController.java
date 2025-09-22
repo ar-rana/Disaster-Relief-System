@@ -29,7 +29,8 @@ public class ProviderController {
 
     @PostMapping("/resolveRelief")
     public ResponseEntity<String> resolveRelief(@RequestBody ReliefStatusDTO request) {
-        if (request.getReliefId() == null || request.getImages() == null || request.getDesc() == null) {
+        if (request.getReliefId() == null || request.getImages() == null || request.getDesc() == null ||
+                request.getImages().isEmpty() || request.getDesc().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("All fields are required to resolveRelief");
         }
         providerService.resolveRelief(request);
@@ -39,7 +40,8 @@ public class ProviderController {
 
     @PostMapping("/rejectRelief")
     public ResponseEntity<String> rejectRelief(@RequestBody ReliefStatusDTO request) {
-        if (request.getReliefId() == null || request.getDesc() == null) {
+        if (request.getReliefId() == null || request.getDesc() == null ||
+                request.getDesc().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("reliefId and desc are required for rejectRelief");
         }
         providerService.rejectRelief(request);
@@ -47,8 +49,9 @@ public class ProviderController {
         return ResponseEntity.ok("Relief rejected successfully");
     }
 
+    // un-tested
     @GetMapping("/get/assignments/{username}")
-    public ResponseEntity<?> getAssignedReliefs(@RequestParam String username) {
+    public ResponseEntity<?> getAssignedReliefs(@PathVariable String username) {
         if (username == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("reliefId and desc are required for rejectRelief");
         }

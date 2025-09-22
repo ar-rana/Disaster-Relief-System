@@ -2,11 +2,13 @@ package com.example.server.contoller;
 
 import java.util.Map;
 
+import com.example.server.model.User;
 import com.example.server.service.AIService;
 import com.example.server.service.AdminService;
 import com.example.server.service.HQService;
 import com.example.server.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -27,8 +29,8 @@ public class AdminController {
     @Value("${app.secret.key}")
     private String secretKey;
 
-    @Value("${app.secret.hq}")
-    private String hqSecretKey;
+//    @Value("${app.secret.hq}")
+//    private String hqSecretKey;
 
     @Autowired
     private AdminService adminService;
@@ -39,18 +41,18 @@ public class AdminController {
     @Autowired
     private HQService hqService;
 
-    @PostMapping("/create/hq")
+    @PostMapping("/super/create/hq")
     public ResponseEntity<String> createHQ(
             @RequestBody Map<String, String> body,
-            @RequestHeader(value = "x-hq-secret", required = true) String secret
+            @RequestHeader(value = "x-super-secret", required = true) String secret
     ) {
-        if (!secret.equals(hqSecretKey)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED USER FOR HQ ACCESS");
+        if (!secret.equals(secretKey)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED USER FOR HQ ACCESS, NOT SUPER");
         }
         String longitude = body.get("longitude");
         String latitude = body.get("latitude");
         String address = body.get("address");
-        String resource = body.get("address");
+        String resource = body.get("resource");
         if (longitude == null || latitude == null || address == null || resource == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("enter complete data");
         }
@@ -58,7 +60,8 @@ public class AdminController {
         log.info("[ADMIN] Creating new HQ with longitude={}, latitude={}, address={}",
                 longitude, latitude, address);
 
-        String res = hqService.createHeadquarters(Double.parseDouble(longitude),
+        String res = hqService.createHeadquarters(
+                Double.parseDouble(longitude),
                 Double.parseDouble(latitude),
                 address,
                 Integer.parseInt(resource)
@@ -81,13 +84,10 @@ public class AdminController {
     }
 
     @PostMapping("/add/admin")
-    public ResponseEntity<String> addAdmin(
-            @RequestBody Map<String, String> item,
-            @RequestHeader(value = "x-admin-secret", required = true) String secret) {
-        if (!secret.equals(secretKey)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED USER FOR HQ ACCESS");
-        }
-
+    public ResponseEntity<String> addAdmin(@RequestBody Map<String, String> item) {
+//        if (!secret.equals(secretKey)) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED USER FOR HQ ACCESS");
+//        }
         log.info("[ADMIN] creating admin: {}", item.toString());
         String username = item.get("username");
         String password = item.get("password");
@@ -106,7 +106,7 @@ public class AdminController {
         return ResponseEntity.ok(res);
     }
 
-    @PutMapping("/update/hq")
+    @PutMapping("/transfer/provider")
     public ResponseEntity<String> transferProvider(@RequestBody Map<String, String> item) {
         log.info("[ADMIN] Transfer request received: {}", item.toString());
         String hqId = item.get("hqId");
@@ -118,6 +118,7 @@ public class AdminController {
         return ResponseEntity.ok(res);
     }
 
+    // un-tested
     @PutMapping("/alter/pass")
     public ResponseEntity<String> changePassword(@RequestBody String newPass) {
         log.info("[ADMIN] change password req by: {}", newPass);
@@ -128,10 +129,27 @@ public class AdminController {
 //    private AIService aiService;
 //
 //    @PostMapping("/ai")
-//    public ResponseEntity<String> authCheck(@RequestBody Map<String, String> item) {
+//    public ResponseEntity<String> aiCheck(@RequestBody Map<String, String> item) {
 //        String req = item.get("req");
 //        if (req == null || req.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("req missing");
 //        String res = aiService.getCriticality(req);
 //        return ResponseEntity.ok(res);
 //    }
+
+    @PostMapping("/super/add/admin")
+    public ResponseEntity<?> superUser(
+            @RequestBody Map<String, String> item,
+            @RequestHeader(value = "x-super-secret", required = true) String secret) {
+        if (!secret.equals(secretKey)) {
+            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body("you are not super");
+        }
+
+        String username = item.get("username");
+        String password = item.get("password");
+        String name = item.get("name");
+        Integer hqId = Integer.valueOf(item.get("hqId"));
+
+        User res = adminService.superUser(username, password, name, hqId);
+        return ResponseEntity.ok(res);
+    }
 }

@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +43,7 @@ public class ReliefController {
     }
 
     @GetMapping("/getstatus/all/{contact}")
-    public ResponseEntity<List<ReliefReq>> getAllRequests(@RequestParam String contact) {
+    public ResponseEntity<List<ReliefReq>> getAllRequests(@PathVariable String contact) {
         log.info("[RELIEF] Getting all requests for: {}", contact);
 
         List<ReliefReq> res = reliefService.getAllRequests(contact);
@@ -52,8 +53,19 @@ public class ReliefController {
         return ResponseEntity.ok(res);
     }
 
+    @GetMapping("/getrelief/{reliefId}")
+    public ResponseEntity<ReliefReq> getReliefReq(@PathVariable String reliefId) {
+        log.info("[RELIEF] Getting requests for: {}", reliefId);
+
+        ReliefReq res = reliefService.getReliefRequest(reliefId);
+        if (res == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok(res);
+    }
+
     @GetMapping("/getstatus/{reliefId}")
-    public ResponseEntity<?> getRequestDetail(@RequestBody String reliefId) {
+    public ResponseEntity<?> getRequestDetail(@PathVariable String reliefId) {
         log.info("[RELIEF] Relief Details: {}", reliefId);
         long reliefUid;
         try {

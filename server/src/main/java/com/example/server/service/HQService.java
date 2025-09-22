@@ -47,14 +47,16 @@ public class HQService {
             return "HeadQuarters do not exits!";
         }
         hq.setResourceUnits(hq.getResourceUnits() + additionalResources);
-        hqRepository.save(hq);
+        HeadQuarters savedHq = hqRepository.save(hq);
+        cache.setCache(Keys.key(Keys.HQ, savedHq.getHqId()), savedHq, 240);
 
-        return "new resources allocated successfully!!";
+        return "new resources allocated successfully, Total units: " + savedHq.getResourceUnits();
     }
 
     public String createHeadquarters(double longitude, double latitude, String address, int resource) {
         HeadQuarters hq = new HeadQuarters(address, longitude, latitude, resource);
-        hqRepository.save(hq);
-        return "NEW HQ added Successfully";
+        HeadQuarters savedHq = hqRepository.save(hq);
+        cache.setCache(Keys.key(Keys.HQ, savedHq.getHqId()), savedHq, 240);
+        return "NEW HQ added Successfully, ID: " + savedHq.getHqId();
     }
 }

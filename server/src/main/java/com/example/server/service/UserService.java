@@ -26,8 +26,8 @@ public class UserService {
     @Autowired
     private RedisCacheService cache;
 
-    @Autowired
-    private HQService hqService;
+//    @Autowired
+//    private HQService hqService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -49,15 +49,16 @@ public class UserService {
         }
 
         User provider = new User(username, name, username, password); // username is also the number
-        int hqId = controller.getHeadQuarters().getHqId();
+//        int hqId = controller.getHeadQuarters().getHqId();
+        log.info("[USER_S] Setting provider HQ: {}", controller.getHeadQuarters());
+        provider.setHeadQuarters(controller.getHeadQuarters());
 
-        controller.setHeadQuarters(hqService.getHeadquartersById(hqId));
         provider.setPassword((encoder.encode(provider.getPassword())));
         User savedUser = repository.save(provider);
 
-        cache.setCache(Keys.key(Keys.PROVIDER, savedUser.getUsername()), savedUser, 120);
+        cache.setCache(Keys.key(Keys.USER, savedUser.getUsername()), savedUser, 120);
 
-        return "User registered Successfully";
+        return "User registered Successfully: " + savedUser.getUsername();
     }
 
     public String login(String username, String password) {
@@ -72,7 +73,7 @@ public class UserService {
     }
 
     public User getUserByUsername(String username) {
-        String key = Keys.key(Keys.PROVIDER, username);
+        String key = Keys.key(Keys.USER, username);
         User item = cache.getCache(key, User.class);
         if (item != null) {
             log.info("[CACHE] getUserByUsername from cache: {}", item);

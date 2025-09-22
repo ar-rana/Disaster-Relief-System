@@ -25,6 +25,6 @@ public class Consumer {
         }
 
         // Assignment to be DONE
-        System.out.println("DO-STUFF HERE");
+        log.info("[R_MQ-CONSUMER] READY FOR PROCESSING: {}", rq);
     }
 }

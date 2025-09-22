@@ -2,10 +2,9 @@ package com.example.server.model.enums;
 
 public enum Keys {
     RELIEF("relief/%s"),
-    PROVIDER("provider/%s"),
+    USER("provider/%s"),
     HQ("hq/%s"),
-    STATUS("status/%s"),
-    ADMIN("amin/%s");
+    STATUS("status/%s");
     private final String prefixKey;
     Keys(String key) {
         this.prefixKey = key;

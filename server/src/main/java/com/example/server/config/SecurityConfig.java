@@ -34,7 +34,7 @@ public class SecurityConfig {
             .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/request/**", "/user/login",
-                                "/admin/").permitAll() // "verification/start/kyc"
+                                "/admin/super/**").permitAll() // "verification/start/kyc"
                         .anyRequest().authenticated()
                 ).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

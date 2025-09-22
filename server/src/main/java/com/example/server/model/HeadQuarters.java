@@ -39,7 +39,7 @@ public class HeadQuarters {
     }
 
     public HeadQuarters(String address, double longitude, double latitude, Integer resource) {
-        address = address;
+        this.address = address;
         this.longitude = longitude;
         this.latitude = latitude;
         this.resourceUnits = resource;
