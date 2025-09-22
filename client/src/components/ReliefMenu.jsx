@@ -11,10 +11,10 @@ const data = [
   },
   {
     id: 1,
-    criticality: "high",
+    criticality: "very_high",
     lat: "28.43",
     lon: "77.1234",
-    desc: "my god im dead, save im dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveme save me save me save me save me save me save me save me save mesave me",
+    desc: "I am from a  rescue OPs team, we are here at near the vally in between the mountains where the landslide happened, there is a person here in who go stuck in the landslide and is injured with a broken back, we need assistance quick",
     POC: "0987654321",
     name: "kaliyug",
   },
@@ -23,9 +23,9 @@ const data = [
     criticality: "high",
     lat: "28.3132",
     lon: "77.351",
-    desc: "my god he is dead",
+    desc: "We are low on resources, we need more food and water on the camp, we have supplies for 7 days only",
     POC: "78905238",
-    name: "street dog",
+    name: "kal",
   },
   ,
   {
@@ -35,7 +35,7 @@ const data = [
     lon: "77.1234",
     desc: "my god im dead, save im dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveme save me save me save me save me save me save me save me save mesave me",
     POC: "0987654321",
-    name: "kaliyug",
+    name: "afas",
   },
   {
     id: 2,
