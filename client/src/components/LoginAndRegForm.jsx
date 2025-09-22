@@ -1,25 +1,34 @@
 import React, { useState } from "react";
 
 const LoginAndRegForm = ({ signUp, formHandler }) => {
-  const [user, setUser] = useState("");
+  const [name, setName] = useState("");
   const [pass, setPass] = useState("");
   const [contact, setContact] = useState("");
   const [warning, setWarning] = useState("");
 
   const handleSubmit = (e) => {
-    if (!user || !pass) {
+    if (!contact || !pass) {
       setWarning("username or password missing");
       return;
     }
-    if (signUp && !contact) {
-      setWarning("contact missing");
+    if (signUp && !name) {
+      setWarning("name missing");
       return;
     }
     setWarning("");
-    
+
+    const payload = {
+      username: contact,
+      password: pass,
+      name: name,
+    };
     e.preventDefault();
-    formHandler(e);
-  }
+    formHandler(e, payload);
+
+    setContact("");
+    setName("");
+    setPass("")
+  };
   return (
     <div>
       <div className="flex flex-col items-center justify-center px-4 py-6 mx-auto md:h-screen lg:py-0">
@@ -37,13 +46,13 @@ const LoginAndRegForm = ({ signUp, formHandler }) => {
                   htmlFor="username"
                   className="block mb-2 text-sm font-medium text-gray-900"
                 >
-                  Username
+                  Username/Contact
                 </label>
                 <input
                   type="text"
                   name="username"
                   id="username"
-                  onChange={(e) => setUser(e.target.value)}
+                  onChange={(e) => setContact(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   placeholder="username"
                   required
@@ -51,18 +60,18 @@ const LoginAndRegForm = ({ signUp, formHandler }) => {
                 {signUp ? (
                   <>
                     <label
-                      htmlFor="contact"
+                      htmlFor="name"
                       className="block mb-2 text-sm font-medium text-gray-900"
                     >
-                      Contact number
+                      Name
                     </label>
                     <input
-                      type="number"
-                      name="contact"
-                      id="contact"
-                      onChange={(e) => setContact(e.target.value)}
+                      type="text"
+                      name="name"
+                      id="name"
+                      onChange={(e) => setName(e.target.value)}
                       className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                      placeholder="contact"
+                      placeholder="Name"
                       required
                     />
                   </>

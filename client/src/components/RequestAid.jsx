@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { create } from "../api/relief/relief";
 
 const RequestAid = ({ isOpen, setOpen }) => {
-  const [location, setLocation] = useState([]);
+  const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [warning, setWarning] = useState("");
   const [verify, setVerify] = useState(false);
 
@@ -13,8 +14,37 @@ const RequestAid = ({ isOpen, setOpen }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setLocation({
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+          });
+        },
+        (err) => {
+          alert("Unable to retrieve location. Please allow location access.");
+          console.log(err);
+          return;
+        }
+      );
+      const payload = {
+        name: name,
+        poc: poc,
+        longitude: location.longitude,
+        latitude: location.latitude,
+        description: description,
+      };
+      console.log("[AID_REQ] Payload: ", payload);
+
+      const res = await create(payload);
+      alert(res.data); 
+      if (res.success) {
+        setOpen(prev => !prev);
+      } 
+    }
   };
 
   return (

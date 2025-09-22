@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const base_url = process.env.BASE_URL;
+const base_url = import.meta.env.VITE_BASE_URL;
 
 const url = {
   addUser: "admin/add/user",
@@ -13,9 +13,9 @@ const url = {
 // super/create/hq
 // super/add/admin
 
-export async function addUser(payload) {
+export async function addProvider(payload) {
   const headers = {
-    Authorization: window.localStorage.getItem("token"),
+    Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   };
   const path = base_url + url.addUser;
@@ -40,7 +40,7 @@ export async function addUser(payload) {
 
 export async function addAdmin(payload) {
   const headers = {
-    Authorization: window.localStorage.getItem("token"),
+    Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   };
   const path = base_url + url.addAdmin;
@@ -65,7 +65,7 @@ export async function addAdmin(payload) {
 
 export async function allocateResources(payload) {
   const headers = {
-    Authorization: window.localStorage.getItem("token"),
+    Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   };
   const path = base_url + url.allocateResources;
@@ -88,9 +88,9 @@ export async function allocateResources(payload) {
     });
 }
 
-export async function trasferProvider(payload) {
+export async function transferProvider(payload) {
   const headers = {
-    Authorization: window.localStorage.getItem("token"),
+    Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   };
   const path = base_url + url.trasferProvider;
@@ -115,7 +115,7 @@ export async function trasferProvider(payload) {
 
 export async function changePass(payload) {
   const headers = {
-    Authorization: window.localStorage.getItem("token"),
+    Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   };
   const path = base_url + url.changePass;

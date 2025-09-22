@@ -6,7 +6,7 @@ const url = {
   verify: "user/verify",
 };
 
-const base_url = process.env.BASE_URL;
+const base_url = import.meta.env.VITE_BASE_URL;
 
 export async function login(payload) {
   const path = base_url + url.login;
@@ -24,7 +24,7 @@ export async function login(payload) {
 
 export async function verify() {
   const headers = {
-    Authorization: window.localStorage.getItem("token"),
+    Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   };
   const path = base_url + url.verify;
@@ -42,7 +42,7 @@ export async function verify() {
 
 export async function logout() {
   const headers = {
-    Authorization: window.localStorage.getItem("token"),
+    Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   };
   const path = base_url + url.logout;

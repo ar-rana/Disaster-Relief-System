@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import logo from "../assets/mountain_logo.svg";
 import nav_wave from "../assets/nav_wave2.svg";
 import RequestAid from "./RequestAid";
+import useVerify from "../hooks/useVerify";
 
 const Navbar = () => {
+  const { data, err } = useVerify();
   const [isOpen, setOpen] = useState(false);
+
+  const handleLogout = () => {}
 
   return (
     <div className="fixed top-0 flex w-full h-12 bg-[#33A1E0] z-1001">
@@ -15,12 +19,21 @@ const Navbar = () => {
         <p className="font-bold text-white">Disaster Relief System</p>
       </div>
       <div className="p-2 h-full w-1/2 flex gap-2 items-center justify-end">
-        <a
-          className="px-4 py-1 bg-white text-[#33A1E0] font-bold rounded-md hover:bg-[#33A1E0] hover:text-white"
-          href="/login"
-        >
-          Login
-        </a>
+        {!data ? (
+          <a
+            className="px-4 py-1 bg-white text-[#33A1E0] font-bold rounded-md hover:bg-[#33A1E0] hover:text-white"
+            href="/login"
+          >
+            Login
+          </a>
+        ) : (
+          <a
+            className="px-4 py-1 bg-white text-[#33A1E0] font-bold rounded-md hover:bg-[#33A1E0] hover:text-white"
+            onClick={(e) => handleLogout(e)}
+          >
+            Logout
+          </a>
+        )}
         <a
           className="px-4 py-1 bg-white text-[#33A1E0] font-bold rounded-md hover:bg-[#33A1E0] hover:text-white"
           href="/dashboard"

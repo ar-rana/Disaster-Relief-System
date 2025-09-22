@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const base_url = process.env.BASE_URL;
+const base_url = import.meta.env.VITE_BASE_URL;
 
 const url = {
   resolveRelief: "provider/resolveRelief",
@@ -10,7 +10,7 @@ const url = {
 
 export async function resolveRelief(payload) {
   const headers = {
-    Authorization: window.localStorage.getItem("token"),
+    Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   };
   const path = base_url + url.resolveRelief;
@@ -35,7 +35,7 @@ export async function resolveRelief(payload) {
 
 export async function rejectRelief(payload) {
   const headers = {
-    Authorization: window.localStorage.getItem("token"),
+    Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   };
   const path = base_url + url.rejectRelief;
@@ -60,7 +60,7 @@ export async function rejectRelief(payload) {
 
 export async function getAssignedReliefs(username) {
   const headers = {
-    Authorization: window.localStorage.getItem("token"),
+    Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   };
   const path = base_url + url.getAssignedReliefs + username;

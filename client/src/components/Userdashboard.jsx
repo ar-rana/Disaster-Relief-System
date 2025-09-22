@@ -38,7 +38,7 @@ const UserDashboard = ({
         </form>
         <div className="max-h-[28rem] overflow-y-scroll p-4 mt-1.5 space-y-2">
           {reliefReq.map((req) => {
-            return <ReliefinfoCard key={req.id} req={req} />;
+            return <ReliefinfoCard key={req.uid} req={req} />;
           })}
         </div>
       </div>
@@ -66,7 +66,7 @@ const UserDashboard = ({
         </form>
         <div className="max-h-[28rem] overflow-y-scroll p-4 mt-1.5 space-y-2">
           {reliefReq.map((req) => {
-            return <ReliefinfoCard key={req.id} req={req} />;
+            return <ReliefinfoCard key={req.uid} req={req} />;
           })}
         </div>
       </div>

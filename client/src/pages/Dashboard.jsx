@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar.jsx";
 import UserDashboard from "../components/UserDashboard.jsx";
 import AdminDashboard from "../components/AdminDashboard.jsx";
+import { getRelief, getStatus } from "../api/relief/relief.js";
 
 const data = [
   {
@@ -52,8 +53,42 @@ const Dashboard = ({ admin }) => {
 
   const [reliefReq, setReliefReq] = useState(data);
 
-  const submitHandlerForNumber = () => {};
-  const submitHandlerForId = () => {};
+  // TO-DO
+  // send this to UserDashboard and use the data inside in "Detail search" section
+  const [reliefDetail, setReliefDetail] = useState({
+    reliefReq: null,
+    reliefDetail: [],
+  });
+
+  const getAllRequests = async (e) => {
+    const res = await getAllRequests(phone);
+    if (res.success) {
+      setReliefReq(res.data);
+    } else {
+      alert("Some error occured, while fetching Relief Requests");
+    }
+  };
+
+  const submitHandlerForReliefId = async (e) => {
+    const res01 = await getRelief(reliefId);
+    if (res01.success) {
+      setReliefDetail((prev) => ({
+        ...prev,
+        reliefReq: res01.data,
+      }));
+    }
+    const res02 = await getStatus(reliefId);
+    if (res02.success) {
+      setReliefDetail((prev) => ({
+        ...prev,
+        reliefDetail: res02.data,
+      }));
+    }
+
+    if (!res01.success || !res02.success) {
+      alert("no relief request for this ID");
+    }
+  };
 
   return (
     <>
@@ -61,17 +96,16 @@ const Dashboard = ({ admin }) => {
       <br />
       <div className="bg-gray-50 h-auto w-[90%] ml-auto mr-auto p-4 pt-[5%] space-y-8">
         <UserDashboard
-          submitHandlerForNumber={submitHandlerForNumber}
-          submitHandlerForId={submitHandlerForId}
+          submitHandlerForNumber={getAllRequests}
+          submitHandlerForId={submitHandlerForReliefId}
           phone={phone}
           setPhone={setPhone}
-        // 'reliefReq' DATA being used for both ID and number change that when the actual data comes
           reliefReq={reliefReq}
           reliefId={reliefId}
           setReliefId={setReliefId}
         />
         <br />
-        <AdminDashboard />
+        {admin ? <AdminDashboard /> : ""}
       </div>
     </>
   );

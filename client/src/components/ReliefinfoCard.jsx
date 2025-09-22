@@ -9,10 +9,10 @@ const ReliefinfoCard = ({ req, nav = false }) => {
     >
       <div className="flex">
         <div>
-          <p title={req.desc} className="font-bold">
-            {req.name} | Id: {req.id}
+          <p title={req.description} className="font-bold">
+            {req.name} | Id: {req.uid}
           </p>
-          <p className="text-sm font-bold">Contact: {req.POC}</p>
+          <p className="text-sm font-bold">Contact: {req.poc}</p>
           <p className="font-semibold text-sm">
             Criticality: {req.criticality} | Status:{" "}
             {req.status === "true" ? "Completed" : "Incomplete"}
@@ -23,7 +23,7 @@ const ReliefinfoCard = ({ req, nav = false }) => {
               nav ? "truncate w-[285px]" : ""
             }`}
           >
-            {req.desc}
+            {req.description}
           </p>
           {nav ? (
             <div className="flex gap-2">
