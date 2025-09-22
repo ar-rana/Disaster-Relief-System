@@ -13,13 +13,20 @@ export async function create(payload) {
   const path = base_url + url.createReq;
   return axios
     .post(path, payload)
-    .then((res) => res.data)
+    .then((res) => {
+      return {
+        success: true,
+        data: res.data,
+      };
+    })
     .catch((err) => {
-      if (err.response) {
-        return err.response.data;
-      }
+      const errMsg = err.response ? err.response.data : err.message;
+      console.log(errMsg);
       console.log(err);
-      return err.message;
+      return {
+        success: false,
+        data: errMsg,
+      };
     });
 }
 
@@ -27,13 +34,20 @@ export async function getAllRequests(contact) {
   const path = base_url + url.getAllReq + contact;
   return axios
     .get(path)
-    .then((res) => res.data)
+    .then((res) => {
+      return {
+        success: true,
+        data: res.data,
+      };
+    })
     .catch((err) => {
-      if (err.response) {
-        return err.response.data;
-      }
+      const errMsg = err.response ? err.response.data : err.message;
+      console.log(errMsg);
       console.log(err);
-      return err.message;
+      return {
+        success: false,
+        data: errMsg,
+      };
     });
 }
 
@@ -41,13 +55,20 @@ export async function getRelief(id) {
   const path = base_url + url.getRelief + id;
   return axios
     .get(path)
-    .then((res) => res.data)
+    .then((res) => {
+      return {
+        success: true,
+        data: res.data,
+      };
+    })
     .catch((err) => {
-      if (err.response) {
-        return err.response.data;
-      }
+      const errMsg = err.response ? err.response.data : err.message;
+      console.log(errMsg);
       console.log(err);
-      return err.message;
+      return {
+        success: false,
+        data: errMsg,
+      };
     });
 }
 
@@ -55,12 +76,19 @@ export async function getStatus(id) {
   const path = base_url + url.getStatus + id;
   return axios
     .get(path)
-    .then((res) => res.data)
+    .then((res) => {
+      return {
+        success: true,
+        data: res.data,
+      };
+    })
     .catch((err) => {
-      if (err.response) {
-        return err.response.data;
-      }
+      const errMsg = err.response ? err.response.data : err.message;
+      console.log(errMsg);
       console.log(err);
-      return err.message;
+      return {
+        success: false,
+        data: errMsg,
+      };
     });
 }

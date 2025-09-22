@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosHeaders } from "axios";
 
 const url = {
   login: "user/login",
@@ -23,9 +23,13 @@ export async function login(payload) {
 }
 
 export async function verify() {
+  const headers = {
+    Authorization: window.localStorage.getItem("token"),
+    "Content-Type": "application/json",
+  };
   const path = base_url + url.verify;
   return await axios
-    .get(path)
+    .get(path, { headers })
     .then((res) => res.data)
     .catch((err) => {
       if (err.response) {
@@ -37,15 +41,19 @@ export async function verify() {
 }
 
 export async function logout() {
+  const headers = {
+    Authorization: window.localStorage.getItem("token"),
+    "Content-Type": "application/json",
+  };
   const path = base_url + url.logout;
   return await axios
-    .get(path)
+    .get(path, { headers })
     .then((res) => res.data)
     .catch((err) => {
       if (err.response) {
         return err.response.data;
       }
       console.log(err);
-      return err.message;
+      throw err;
     });
 }
