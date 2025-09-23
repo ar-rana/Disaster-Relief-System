@@ -66,6 +66,7 @@ public class UserService {
         if (user == null) return null;
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), password));
 
+        log.info("[USER_S] User login status: {}", authentication.isAuthenticated());
         if(authentication.isAuthenticated())
             return jwtService.generateToken(user.getUsername(), user.getRole());
         else

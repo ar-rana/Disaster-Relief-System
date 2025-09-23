@@ -35,7 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
         String userName = null;
         UserType role = null;
-        log.info("Request at: {}", request.getRequestURI());
+        log.info("[JWT_FILTER] Request at: {}", request.getRequestURI());
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7); //removing "Bearer " to get token
@@ -44,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = context.getBean(UserDetailsService.class).loadUserByUsername(userName);
-
+            log.info("[JWT_FILTER] Username: {}", userName);
             if (request.getRequestURI().contains("admin")
                     && jwtService.extractRole(token) != UserType.ADMIN) {
                 filterChain.doFilter(request, response);

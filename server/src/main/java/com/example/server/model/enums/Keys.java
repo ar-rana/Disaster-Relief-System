@@ -2,7 +2,7 @@ package com.example.server.model.enums;
 
 public enum Keys {
     RELIEF("relief/%s"),
-    USER("provider/%s"),
+    USER("user/%s"),
     HQ("hq/%s"),
     STATUS("status/%s");
     private final String prefixKey;
