@@ -68,10 +68,13 @@ public class AdminService {
         return "Provider Updated Successfully, New HQ: " + newProvider.getHeadQuarters();
     }
 
-    public String changePassword(String username, String password) {
-        User admin = userService.getUserByUsername(username);
-        // check if username matches Context.auth
-        return "";
+    public String changePassword(String password) {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        User admin = userService.getUserByUsername(user);
+
+        admin.setPassword((encoder.encode(admin.getPassword())));
+
+        return "password changed successfully";
     }
 
     public User superUser(String username, String password, String name, Integer hqId) {

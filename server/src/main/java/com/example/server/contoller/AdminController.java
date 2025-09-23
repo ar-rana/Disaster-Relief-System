@@ -136,6 +136,14 @@ public class AdminController {
 //        return ResponseEntity.ok(res);
 //    }
 
+    @PostMapping("/ai")
+    public ResponseEntity<String> changePass(@RequestBody String password) {
+        if (password == null || password.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("req missing");
+
+        String res = adminService.changePassword(password);
+        return ResponseEntity.ok(res);
+    }
+
     @PostMapping("/super/add/admin")
     public ResponseEntity<?> superUser(
             @RequestBody Map<String, String> item,
