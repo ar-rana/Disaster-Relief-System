@@ -3,7 +3,7 @@ import axios, { AxiosHeaders } from "axios";
 const url = {
   login: "user/login",
   logout: "user/logout",
-  verify: "user/verify",
+  verify: "user/verified",
 };
 
 const base_url = import.meta.env.VITE_BASE_URL;
@@ -12,13 +12,20 @@ export async function login(payload) {
   const path = base_url + url.login;
   return await axios
     .post(path, payload)
-    .then((res) => res.data)
+    .then((res) => {
+      return {
+        success: true,
+        data: res.data,
+      };
+    })
     .catch((err) => {
-      if (err.response) {
-        return err.response.data;
-      }
+      const errMsg = err.response ? err.response.data : err.message;
+      console.log(errMsg);
       console.log(err);
-      return err.message;
+      return {
+        success: false,
+        data: errMsg,
+      };
     });
 }
 
@@ -30,13 +37,20 @@ export async function verify() {
   const path = base_url + url.verify;
   return await axios
     .get(path, { headers })
-    .then((res) => res.data)
+    .then((res) => {
+      return {
+        success: true,
+        data: res.data,
+      };
+    })
     .catch((err) => {
-      if (err.response) {
-        return err.response.data;
-      }
+      const errMsg = err.response ? err.response.data : err.message;
+      console.log("Err Msg: ", errMsg);
       console.log(err);
-      return err.message;
+      return {
+        success: false,
+        data: errMsg,
+      };
     });
 }
 
@@ -48,12 +62,19 @@ export async function logout() {
   const path = base_url + url.logout;
   return await axios
     .get(path, { headers })
-    .then((res) => res.data)
+    .then((res) => {
+      return {
+        success: true,
+        data: res.data,
+      };
+    })
     .catch((err) => {
-      if (err.response) {
-        return err.response.data;
-      }
+      const errMsg = err.response ? err.response.data : err.message;
+      console.log(errMsg);
       console.log(err);
-      throw err;
+      return {
+        success: false,
+        data: errMsg,
+      };
     });
 }

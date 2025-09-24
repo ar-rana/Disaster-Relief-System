@@ -1,33 +1,26 @@
 import { useState, useRef, useCallback, useEffect } from "react";
+import { verify } from "../api/general";
 
 export default function useVerify() {
   const [data, setData] = useState(false);
   const [error, setError] = useState(null);
 
-  const verify = async () => {
-    setError(null);
-    try {
-      console.log("BASE_URL at verfy hook: ", import.meta.env.VITE_BASE_URL);
-      const res = await fetch(`${import.meta.env.VITE_BASE_URL}user/verify`, {
-        method: "GET",
-      });
+  const verifyHook = async () => {
+      const res = await verify(); 
 
-      const response = await res.text();
-      if (res.ok) {
+      if (res.success) {
         setData(true);
-        console.log(response);
+        console.log(res.data);
       } else {
         setData(false);
+        setError(res.data);
       }
-    } catch (err) {
-      setError(err);
-    }
   };
 
   useEffect(() => {
-    verify();
+    verifyHook();
     const handleStorageChange = () => {
-      verify();
+      verifyHook();
     };
 
     window.addEventListener("storage", handleStorageChange);

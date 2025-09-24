@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { create } from "../api/relief/relief";
 
 const RequestAid = ({ isOpen, setOpen }) => {
+  const [loading, setLoading] = useState(false);
+
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [warning, setWarning] = useState("");
-  const [verify, setVerify] = useState(false);
+  const [verify, setVerify] = useState(true);
 
   const [name, setName] = useState("");
   const [poc, setPoc] = useState("");
@@ -15,35 +17,51 @@ const RequestAid = ({ isOpen, setOpen }) => {
   if (!isOpen) return null;
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setLocation({
-            latitude: pos.coords.latitude,
-            longitude: pos.coords.longitude,
-          });
-        },
-        (err) => {
-          alert("Unable to retrieve location. Please allow location access.");
-          console.log(err);
-          return;
-        }
-      );
+
+    if (!navigator.geolocation) {
+      setWarning("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    try {
+      // Wrap getCurrentPosition in a Promise so we can await it
+      const pos = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          (position) => resolve(position),
+          (error) => reject(error),
+          { enableHighAccuracy: true, timeout: 10000 }
+        );
+      });
+
+      const latitude = pos.coords.latitude;
+      const longitude = pos.coords.longitude;
+      setLocation({ latitude, longitude });
+
       const payload = {
-        name: name,
-        poc: poc,
-        longitude: location.longitude,
-        latitude: location.latitude,
-        description: description,
+        name,
+        poc,
+        longitude,
+        latitude,
+        description,
       };
+
       console.log("[AID_REQ] Payload: ", payload);
 
       const res = await create(payload);
-      alert(res.data); 
+      alert(res.data);
       if (res.success) {
-        setOpen(prev => !prev);
-      } 
+        setOpen((prev) => !prev);
+      }
+      alert(res.data);
+    } catch (err) {
+      console.log("Unable to retrieve location or permission denied:", err);
+      setWarning(
+        "Unable to retrieve location. Please allow location access and try again."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,7 +110,7 @@ const RequestAid = ({ isOpen, setOpen }) => {
             required
           />
           <p className="text-sm text-red-500 p-0 m-0">{warning}</p>
-          {verify ? (
+          {!verify ? (
             <input
               type="number"
               name="otp"
@@ -105,7 +123,18 @@ const RequestAid = ({ isOpen, setOpen }) => {
           ) : (
             ""
           )}
-          {!verify ? (
+          {loading ? (
+            <span
+              type="submit"
+              className="bg-[#33A1E0] flex items-center justify-center gap-2 text-white font-semibold py-2 rounded hover:bg-[#2381b0]"
+            >
+              <svg
+                class="size-5 animate-spin bg-white rounded-[25%]"
+                viewBox="0 0 24 24"
+              ></svg>
+              Processing…
+            </span>
+          ) : verify ? (
             <button
               type="submit"
               className="bg-[#33A1E0] text-white font-semibold py-2 rounded hover:bg-[#2381b0]"

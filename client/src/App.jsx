@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/dashboard" element={<AdminWrapper />}></Route>
           <Route path="/login" element={<Login />}></Route>
-          <Route path="/navigation" element={<Navigation />}></Route>
+          <Route path="/navigation/:id" element={<Navigation />}></Route>
           <Route path="/" element={<Home />}></Route>
         </Routes>
       </BrowserRouter>

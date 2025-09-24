@@ -2,19 +2,30 @@ import React, { useState } from "react";
 import LoginAndRegForm from "../components/LoginAndRegForm";
 import Navbar from "../components/Navbar";
 import { login } from "../api/general";
+import useVerify from "../hooks/useVerify";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const { data, err } = useVerify();
+
+  if (data) {
+    window.location.href = "/";
+  }
+
+  const navigate = useNavigate();
 
   const loginHandler = async (e, payload) => {
     e.preventDefault();
 
     const res = await login(payload);
-    if (res.success) { // there will be redirection here
-      window.localStorage.setItem("token", res.data);
-      window.location.reload();
+    if (res.success) {
+      window.localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", res.data.user);
+      window.location.href = res.data.redirect;
     } else {
       alert(res.data);
     }
+    console.log(res.data);
   };
 
   return (

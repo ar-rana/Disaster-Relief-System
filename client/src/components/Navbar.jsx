@@ -8,7 +8,11 @@ const Navbar = () => {
   const { data, err } = useVerify();
   const [isOpen, setOpen] = useState(false);
 
-  const handleLogout = () => {}
+  const handleLogout = () => {
+    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("user");
+    window.location.reload();
+  }
 
   return (
     <div className="fixed top-0 flex w-full h-12 bg-[#33A1E0] z-1001">

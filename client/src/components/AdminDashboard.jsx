@@ -56,6 +56,7 @@ const AdminDashboard = () => {
     if (!res.success) {
       alert(res.data);
     } else {
+      alert(res.data);
       console.log("Provider created: ", res.data);
     }
   };

@@ -1,72 +1,6 @@
 import React from "react";
-const data = [
-  {
-    id: 0,
-    criticality: "basic",
-    lat: "27.99",
-    lon: "77.456",
-    desc: "just testing the systems",
-    POC: "1234567890",
-    name: "arrthjujn",
-  },
-  {
-    id: 1,
-    criticality: "very_high",
-    lat: "28.43",
-    lon: "77.1234",
-    desc: "I am from a  rescue OPs team, we are here at near the vally in between the mountains where the landslide happened, there is a person here in who go stuck in the landslide and is injured with a broken back, we need assistance quick",
-    POC: "0987654321",
-    name: "kaliyug",
-  },
-  {
-    id: 2,
-    criticality: "high",
-    lat: "28.3132",
-    lon: "77.351",
-    desc: "We are low on resources, we need more food and water on the camp, we have supplies for 7 days only",
-    POC: "78905238",
-    name: "kal",
-  },
-  ,
-  {
-    id: 1,
-    criticality: "high",
-    lat: "28.43",
-    lon: "77.1234",
-    desc: "my god im dead, save im dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveme save me save me save me save me save me save me save me save mesave me",
-    POC: "0987654321",
-    name: "afas",
-  },
-  {
-    id: 2,
-    criticality: "very_high",
-    lat: "28.3132",
-    lon: "77.351",
-    desc: "my god he is dead",
-    POC: "78905238",
-    name: "street dog",
-  },
-  {
-    id: 1,
-    criticality: "high",
-    lat: "28.43",
-    lon: "77.1234",
-    desc: "my god im dead, save im dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveim dead, save me save me save me save me save me save me save me save me saveme save me save me save me save me save me save me save me save mesave me",
-    POC: "0987654321",
-    name: "kaliyug",
-  },
-  {
-    id: 2,
-    criticality: "moderate",
-    lat: "28.3132",
-    lon: "77.351",
-    desc: "my god he is dead",
-    POC: "78905238",
-    name: "street dog",
-  },
-];
 
-const ReliefMenu = () => {
+const ReliefMenu = ({ data }) => {
   return (
     <div className="border-2 h-[98vh] border-amber-200 bg-gray-100 p-4 rounded-md z-10">
       <div className="bg-white flex flex-col gap-3 p-3 rounded-md overflow-y-scroll h-full">
@@ -75,13 +9,13 @@ const ReliefMenu = () => {
         </p>
         {data.map((data) => {
           return (
-            <div
+            <div key={data.uid}
               className={`bg-amber-50 border-t-4 rounded-b text-teal-900 px-3 py-2 shadow-md w-[98%] self-center ${
-                data.criticality === "very_high"
+                data.criticality === "VERY_HIGH"
                   ? "border-red-700"
-                  : data.criticality === "high"
+                  : data.criticality === "HIGH"
                   ? "border-orange-400"
-                  : data.criticality === "moderate"
+                  : data.criticality === "MODERATE"
                   ? "border-amber-300"
                   : "border-blue-400"
               }`}
@@ -92,7 +26,7 @@ const ReliefMenu = () => {
                   <p className="font-semibold text-sm underline">
                     Criticality: {data.criticality}
                   </p>
-                  <p className="text-sm">{data.desc}</p>
+                  <p className="text-sm">{data.description}</p>
                 </div>
               </div>
             </div>

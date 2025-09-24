@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 
 const LoginAndRegForm = ({ signUp, formHandler }) => {
+  const [loading, setLoading] = useState(false);
+
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
   const [contact, setContact] = useState("");
   const [warning, setWarning] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     if (!contact || !pass) {
       setWarning("username or password missing");
       return;
@@ -15,6 +17,7 @@ const LoginAndRegForm = ({ signUp, formHandler }) => {
       setWarning("name missing");
       return;
     }
+    setLoading(true);
     setWarning("");
 
     const payload = {
@@ -23,11 +26,12 @@ const LoginAndRegForm = ({ signUp, formHandler }) => {
       name: name,
     };
     e.preventDefault();
-    formHandler(e, payload);
+    await formHandler(e, payload);
 
     setContact("");
     setName("");
     setPass("")
+    setLoading(false);
   };
   return (
     <div>
@@ -52,6 +56,7 @@ const LoginAndRegForm = ({ signUp, formHandler }) => {
                   type="text"
                   name="username"
                   id="username"
+                  value={contact}
                   onChange={(e) => setContact(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   placeholder="username"
@@ -69,6 +74,7 @@ const LoginAndRegForm = ({ signUp, formHandler }) => {
                       type="text"
                       name="name"
                       id="name"
+                      value={name}
                       onChange={(e) => setName(e.target.value)}
                       className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                       placeholder="Name"
@@ -90,6 +96,7 @@ const LoginAndRegForm = ({ signUp, formHandler }) => {
                   type="password"
                   name="password"
                   id="password"
+                  value={pass}
                   onChange={(e) => setPass(e.target.value)}
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
