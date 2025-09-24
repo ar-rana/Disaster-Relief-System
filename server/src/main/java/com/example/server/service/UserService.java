@@ -1,5 +1,7 @@
 package com.example.server.service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import com.example.server.model.User;
@@ -21,7 +23,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     @Autowired
     private RedisCacheService cache;
@@ -54,22 +56,28 @@ public class UserService {
         provider.setHeadQuarters(controller.getHeadQuarters());
 
         provider.setPassword((encoder.encode(provider.getPassword())));
-        User savedUser = repository.save(provider);
+        User savedUser = userRepository.save(provider);
 
         cache.setCache(Keys.key(Keys.USER, savedUser.getUsername()), savedUser, 120);
 
         return "User registered Successfully: " + savedUser.getUsername();
     }
 
-    public String login(String username, String password) {
+    public Map<String, String> login(String username, String password) {
         User user = getUserByUsername(username);
         if (user == null) return null;
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), password));
 
         log.info("[USER_S] User login status: {}", authentication.isAuthenticated());
-        if(authentication.isAuthenticated())
-            return jwtService.generateToken(user.getUsername(), user.getRole());
-        else
+        if(authentication.isAuthenticated()) {
+            String token = jwtService.generateToken(user.getUsername(), user.getRole());
+            UserType role = user.getRole();
+            Map<String, String> map = new HashMap<>();
+            map.put("token", token);
+            map.put("role", role.toString());
+            map.put("user", user.getUsername());
+            return map;
+        } else
             return null;
     }
 
@@ -80,11 +88,16 @@ public class UserService {
             log.info("[CACHE] getUserByUsername from cache: {}", item);
             return item;
         }
-        Optional<User> user = repository.findById(username);
+        Optional<User> user = userRepository.findById(username);
         if (user.isPresent()) {
             cache.setCache(key, user.get(), 120);
             return user.get();
         }
         return null;
+    }
+
+
+    public User getRandomProvider() {
+        return userRepository.findRandomProvider();
     }
 }

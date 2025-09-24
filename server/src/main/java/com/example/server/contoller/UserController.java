@@ -1,9 +1,14 @@
 package com.example.server.contoller;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.example.server.model.User;
+import com.example.server.model.enums.Keys;
+import com.example.server.model.enums.UserType;
 import com.example.server.service.UserService;
+import com.example.server.service.redis.RedisCacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +28,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RedisCacheService cache;
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, String> map) {
+    public ResponseEntity<?> login(@RequestBody Map<String, String> map) {
         log.info("[USER] Login req: {}", map.toString());
         String username = map.get("username");
         String password = map.get("password");
@@ -32,14 +40,21 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username & password required");
         }
 
-        String res = userService.login(username, password);
+        Map<String, String> res = userService.login(username, password);
         if (res == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User does not exist");
-        } else {
-            return ResponseEntity.ok(res);
         }
 
-        // there will be redirection here DONT RESPOND JSON, DO REDIRECT
+        UserType role = UserType.valueOf(res.get("role"));
+        if (role == UserType.PROVIDER) {
+            String wsUid = UUID.randomUUID().toString();
+            cache.setCache(Keys.key(Keys.USER, "wsuid/" + username), wsUid, 1320);
+            res.put("redirect", "/navigation/" + wsUid);
+        } else {
+            res.put("redirect", "/dashboard");
+        }
+
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/logout/{username}")

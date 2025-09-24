@@ -19,6 +19,7 @@ import com.google.cloud.firestore.FieldValue;
 import com.google.cloud.firestore.Firestore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,6 +52,10 @@ public class ProviderService {
         status.setImages(lt);
 
         reliefService.updateReliefStatus(status);
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        ReliefReq req = reliefService.getReliefRequest(String.valueOf(status.getReliefId()));
+        removeRelief(req, username);
     }
 
     public void rejectRelief(ReliefStatusDTO request) {
@@ -58,6 +63,10 @@ public class ProviderService {
         status.setDescription(request.getDesc());
 
         reliefService.updateReliefStatus(status);
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        ReliefReq req = reliefService.getReliefRequest(String.valueOf(status.getReliefId()));
+        removeRelief(req, username);
     }
 
     public void assignRelief(ReliefReq request, String username) {
@@ -68,10 +77,10 @@ public class ProviderService {
         } catch (Exception e) {
             // create if not exist
             Map<String, List<ReliefReq>> map = new HashMap<>();
-            map.put("productIds", List.of(request));
+            map.put("requests", List.of(request));
             docRef.set(map);
         }
-        log.info("[FIRESTORE] Request : {} assigned to: {}", request, username);
+        log.info("[FIRESTORE] Request: {} assigned to: {}", request, username);
         String key = Keys.key(Keys.RELIEF, "list/" + username);
         List<ReliefReq> item = cache.getCache(key, new TypeReference<List<ReliefReq>>() {});
         if (item != null) {
@@ -85,8 +94,6 @@ public class ProviderService {
         status.setStatus(ReliefStatus.IN_PROGRESS);
         status.setDescription("your relief has been assigned, help is on its way!!");
         reliefService.updateReliefStatus(status);
-
-        // send to user through WEBSOCKETS
     }
 
     public void removeRelief(ReliefReq request, String username) {
@@ -107,10 +114,10 @@ public class ProviderService {
         String key = Keys.key(Keys.RELIEF, "list/" + username);
         List<ReliefReq> item = cache.getCache(key, new TypeReference<List<ReliefReq>>() {});
         if (item != null) {
-            log.info("[CACHE] Firestore data fetch: {}", username);
+            log.info("[CACHE] Firestore data fetch: {}, data: {}", username, item);
             return item;
         }
-        List<ReliefReq> reqs;
+        List<ReliefReq> reqs = null;
         try {
             DocumentSnapshot snapshot = firestore.collection(SEARCH_DB).document(username).get().get();
             if (snapshot.exists()) {
@@ -118,6 +125,7 @@ public class ProviderService {
                 cache.setCache(key, reqs, 240);
                 return reqs;
             }
+            log.info("[FIRESTORE] Request: {}, for user: {}", reqs, username);
         } catch (InterruptedException e) {
             log.error("[FIRESTORE] query interrupted: {}", e.getMessage());
         } catch (Exception ex) {

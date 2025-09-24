@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,11 +35,21 @@ public class ReliefController {
     @Autowired
     private CommunicationService comms;
 
+    private final SimpMessagingTemplate messagingTemplate;
+    public ReliefController(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
+    }
+
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody ReliefDTO item) {
         log.info("[RELIEF] Relief request received: {}", item.toString());
-        reliefService.createRelief(item);
-        // OTP from Comms.
+        if (item.getDescription() == null || item.getLongitude() == 0 || item.getLatitude() == 0 ||
+            item.getPoc() == null || item.getDescription().isEmpty() || item.getPoc().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("All fields are required");
+        }
+        ReliefReq res = reliefService.createRelief(item);
+
+        messagingTemplate.convertAndSend("/navigation", res);
         return ResponseEntity.ok("we have received you request we will soon be sending help");
     }
 

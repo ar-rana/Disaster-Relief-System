@@ -55,7 +55,7 @@
         </java.version>
     </properties>
     <dependencies>
-<!--        JPA-->
+        <!--        JPA-->
         <dependency>
             <groupId>
                 org.springframework.boot
@@ -64,11 +64,15 @@
                 spring-boot-starter-data-jpa
             </artifactId>
         </dependency>
-<!--        SECURITY-->
-        		<dependency>
-        			<groupId>org.springframework.boot</groupId>
-        			<artifactId>spring-boot-starter-security</artifactId>
-        		</dependency>
+        <!--        SECURITY-->
+        <dependency>
+            <groupId>
+                org.springframework.boot
+            </groupId>
+            <artifactId>
+                spring-boot-starter-security
+            </artifactId>
+        </dependency>
 
         <dependency>
             <groupId>
@@ -127,25 +131,61 @@
                 true
             </optional>
         </dependency>
-
-<!--        JWT-->
         <dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-api</artifactId>
-			<version>0.11.5</version>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-impl</artifactId>
-			<version>0.11.5</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId>
-			<version>0.11.5</version>
-			<scope>runtime</scope>
-		</dependency>
+            <groupId>
+                org.springframework.boot
+            </groupId>
+            <artifactId>
+                spring-boot-devtools
+            </artifactId>
+            <optional>
+                true
+            </optional>
+            <scope>
+                runtime
+            </scope>
+        </dependency>
+
+        <!--        JWT-->
+        <dependency>
+            <groupId>
+                io.jsonwebtoken
+            </groupId>
+            <artifactId>
+                jjwt-api
+            </artifactId>
+            <version>
+                0.11.5
+            </version>
+        </dependency>
+        <dependency>
+            <groupId>
+                io.jsonwebtoken
+            </groupId>
+            <artifactId>
+                jjwt-impl
+            </artifactId>
+            <version>
+                0.11.5
+            </version>
+            <scope>
+                runtime
+            </scope>
+        </dependency>
+        <dependency>
+            <groupId>
+                io.jsonwebtoken
+            </groupId>
+            <artifactId>
+                jjwt-jackson
+            </artifactId>
+            <version>
+                0.11.5
+            </version>
+            <scope>
+                runtime
+            </scope>
+        </dependency>
 
         <dependency>
             <groupId>
@@ -182,8 +222,12 @@
 
         <!--  AI-OPENAI (but we use Gemini API-KEY here) -->
         <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-model-openai</artifactId>
+            <groupId>
+                org.springframework.ai
+            </groupId>
+            <artifactId>
+                spring-ai-starter-model-openai
+            </artifactId>
         </dependency>
 
         <dependency>

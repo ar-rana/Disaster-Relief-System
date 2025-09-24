@@ -37,7 +37,7 @@ public class ReliefService {
     @Autowired
     private AIService aiService;
 
-    public void createRelief(ReliefDTO dto) {
+    public ReliefReq createRelief(ReliefDTO dto) {
         ReliefReq relief = new ReliefReq(
                 dto.getName(),
                 dto.getPoc(),
@@ -69,6 +69,8 @@ public class ReliefService {
         }
 
         producer.sendMessage(savedReq, crt);
+
+        return savedReq;
     }
 
     public List<ReliefReq> getAllRequests(String contact) {

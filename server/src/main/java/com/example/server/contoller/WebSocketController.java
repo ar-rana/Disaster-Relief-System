@@ -1,26 +1,28 @@
 package com.example.server.contoller;
 
-import com.example.server.model.ReliefReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @Slf4j
 public class WebSocketController {
 
     @MessageMapping("/reliefdata/{providerId}")
-    @SendTo("/navigation/{providerId}")
-    public ResponseEntity<ReliefReq> sendData() {
+    public ResponseEntity<?> providerReq() {
         return ResponseEntity.ok().build();
     }
 
-    @MessageMapping("/reliefdata/")
-    @SendTo("/navigation/*")
-    public ResponseEntity<ReliefReq> navigation(@RequestBody ReliefReq item) {
-        return ResponseEntity.ok(item);
+    @SendTo("/navigation/{providerId}")
+    public ResponseEntity<?> sendToProvider(@PathVariable String providerId) {
+        return ResponseEntity.ok().build();
+    }
+
+    @SendTo("/navigation")
+    public ResponseEntity<?> navigation() {
+        return ResponseEntity.ok().build();
     }
 }
