@@ -8,9 +8,10 @@ const UserDashboard = ({
   setPhone,
   reliefReq,
   reliefId,
+  reliefDetail,
   setReliefId,
 }) => {
-    // BOTH THESE divs are using the same 'reliefReq' DATA change that when the actual data comes
+  // BOTH THESE divs are using the same 'reliefReq' DATA change that when the actual data comes
   return (
     <div className="flex flex-col md:flex-row justify-center gap-4">
       <div className="flex-2 border-2 border-gray-400 flex flex-col p-4 rounded-sm">
@@ -65,9 +66,30 @@ const UserDashboard = ({
           </button>
         </form>
         <div className="max-h-[28rem] overflow-y-scroll p-4 mt-1.5 space-y-2">
-          {reliefReq.map((req) => {
-            return <ReliefinfoCard key={req.uid} req={req} />;
-          })}
+          {reliefDetail.reliefReq ? (
+            <ReliefinfoCard req={reliefDetail.reliefReq} />
+          ) : (
+            ""
+          )}
+          {reliefDetail.reliefStatus ? (
+            <div className="bg-white border-t-4 w-full border-[#33A1E0] rounded-b text-teal-900 p-3 shadow-md">
+              <div className="flex">
+                <div>
+                  <p className="font-bold">
+                    Id: {reliefDetail.reliefStatus.reliefId}
+                  </p>
+                  <p className="font-semibold text-sm">
+                    Status: {reliefDetail.reliefStatus.status}
+                  </p>
+                  <p className="text-sm overflow-hidden">
+                    {reliefDetail.reliefStatus.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

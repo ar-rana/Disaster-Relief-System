@@ -30,7 +30,7 @@ export async function create(payload) {
     });
 }
 
-export async function getAllRequests(contact) {
+export async function getAllReliefRequests(contact) {
   const path = base_url + url.getAllReq + contact;
   return axios
     .get(path)

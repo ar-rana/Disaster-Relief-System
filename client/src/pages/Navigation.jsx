@@ -1,18 +1,42 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import Map from "../components/Map.jsx";
 import ReliefMenu from "../components/ReliefMenu.jsx";
 import AssignedMenu from "../components/AssignedMenu.jsx";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { getAssignedReliefs } from "../api/provider/provider.js";
+import Map from "../components/Map.jsx";
 
 const Navigation = () => {
   const { id } = useParams();
   const stompWSRef = useRef(null);
 
   const [reliefs, setReliefs] = useState([]);
-  const [assigned, setAssigned] = useState([]);
+  const [assigned, setAssigned] = useState([{
+    name: "hello",
+    uid: 1,
+    description: "hello",
+    criticality: "MODERATE",
+    longitude: "20.3636391",
+    latitude: "85.8152384",
+    poc: "0987654321"
+  },{
+    name: "hello",
+    uid: 2,
+    description: "hello",
+    criticality: "MODERATE",
+    longitude: "20.3536391",
+    latitude: "85.7152384",
+    poc: "0987654321"
+  },{
+    name: "hello 2",
+    uid: 3,
+    description: "hello world",
+    criticality: "MODERATE",
+    longitude: "20.373321",
+    latitude: "85.8452456",
+    poc: "1234567890"
+  }]);
 
   useEffect(() => {
     const socket = new SockJS("http://localhost:8080/ws");
@@ -91,7 +115,7 @@ const Navigation = () => {
     <div className="w-full h-auto flex flex-col ml-auto mr-auto gap-1 bg-slate-700">
       <div className="w-[93%] h-[100vh] flex gap-4 ml-auto mr-auto">
         <div className="flex-[3] border-2 m-2">
-          <Map />
+          <Map assigned={assigned}/>
         </div>
         <div className="flex-[1.25] self-center">
           <ReliefMenu data={reliefs} />

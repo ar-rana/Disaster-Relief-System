@@ -18,7 +18,7 @@ const ReliefinfoCard = ({ req, nav = false }) => {
             Criticality: {req.criticality}
           </p>
           <p
-            title={req.desc}
+            title={req.description}
             className={`text-sm overflow-hidden ${
               nav ? "truncate w-[285px]" : ""
             }`}
