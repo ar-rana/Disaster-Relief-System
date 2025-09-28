@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { create } from "../api/relief/relief";
+import { create } from "../../api/relief/relief.js";
 
 const RequestAid = ({ isOpen, setOpen }) => {
   const [loading, setLoading] = useState(false);

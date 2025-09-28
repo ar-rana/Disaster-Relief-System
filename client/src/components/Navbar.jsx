@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logo from "../assets/mountain_logo.svg";
 import nav_wave from "../assets/nav_wave2.svg";
-import RequestAid from "./RequestAid";
+import RequestAid from "./infoCards/RequestAid";
 import useVerify from "../hooks/useVerify";
 
 const Navbar = () => {

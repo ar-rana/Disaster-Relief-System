@@ -1,5 +1,5 @@
 import React from "react";
-import ReliefinfoCard from "./ReliefinfoCard";
+import ReliefinfoCard from "../infoCards/ReliefinfoCard";
 
 const UserDashboard = ({
   submitHandlerForNumber,

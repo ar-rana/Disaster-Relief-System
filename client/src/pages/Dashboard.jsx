@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar.jsx";
-import UserDashboard from "../components/UserDashboard.jsx";
-import AdminDashboard from "../components/AdminDashboard.jsx";
+import UserDashboard from "../components/dashboard/Userdashboard.jsx";
+import AdminDashboard from "../components/dashboard/AdminDashboard.jsx";
 import { getAllReliefRequests, getRelief, getStatus } from "../api/relief/relief.js";
 
 const Dashboard = ({ admin }) => {

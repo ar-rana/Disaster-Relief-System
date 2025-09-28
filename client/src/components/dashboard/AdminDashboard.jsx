@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import LoginAndRegForm from "./LoginAndRegForm";
+import LoginAndRegForm from "../LoginAndRegForm";
 import {
   addAdmin,
   addProvider,
   allocateResources,
   transferProvider,
-} from "../api/admin/admin";
+} from "../../api/admin/admin";
 
 const AdminDashboard = () => {
   const [provider, setProvider] = useState("");

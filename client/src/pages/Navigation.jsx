@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import ReliefMenu from "../components/ReliefMenu.jsx";
-import AssignedMenu from "../components/AssignedMenu.jsx";
+import ReliefMenu from "../components/menu/ReliefMenu.jsx";
+import AssignedMenu from "../components/menu/AssignedMenu.jsx";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { getAssignedReliefs } from "../api/provider/provider.js";
-import Map from "../components/Map.jsx";
+import Map from "../components/maps/Map.jsx";
 
 const Navigation = () => {
   const { id } = useParams();

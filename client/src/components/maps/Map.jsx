@@ -10,8 +10,8 @@ import {
 import "leaflet/dist/leaflet.css";
 import MapRouting from "./MapRouting";
 import MapRoutingPoints from "./MapRoutingPoints";
-import hq_svg from "../assets/hq_svg.svg";
-import provider_svg from "../assets/provider_svg.svg";
+import hq_svg from "../../assets/hq_svg.svg";
+import provider_svg from "../../assets/provider_svg.svg";
 
 const Map = ({ assigned }) => {
   const [map, setMap] = useState(null);
