@@ -12,22 +12,20 @@ import MapRouting from "./MapRouting";
 import MapRoutingPoints from "./MapRoutingPoints";
 import hq_svg from "../../assets/hq_svg.svg";
 import provider_svg from "../../assets/provider_svg.svg";
-import { getLiveLocation, roadBlocked } from "../../api/provider/provider";
+import {
+  getLiveLocation,
+  moveToLocation,
+  roadBlocked,
+} from "../../api/provider/provider";
 
-const Map = ({ assigned }) => {
+const Map = ({ assigned, pos = [[]] }) => {
   const [map, setMap] = useState(null);
 
   const [zoom, setZoom] = useState(13);
   const [home, setHome] = useState([20.2636391, 85.8252384]);
 
-  const [currCoords, setCurrCoords] = useState([20.2636391, 85.8252384]);
-  const [pos, setPos] = useState([]);
-  const [waypoints, setWaypoints] = useState([
-    [20.2636391, 85.8252384], // Start
-    [20.3636391, 85.8152384], // Stop 1
-    [20.3536391, 85.7152384], // Stop 2
-    [20.373321, 85.8452456], // Destination
-  ]);
+  const [currCoords, setCurrCoords] = useState(home);
+  const [waypoints, setWaypoints] = useState([home]);
 
   const headquarterIcon = L.icon({
     iconUrl: hq_svg,
@@ -53,8 +51,18 @@ const Map = ({ assigned }) => {
 
   const reportRoadBlock = async () => {
     const data = await roadBlocked();
-    if (data.success) alert("We have reported the Road Block, thank you for you help.");
+    if (data.success)
+      alert("We have reported the Road Block, thank you for you help.");
   };
+
+  useEffect(() => {
+    assigned.map((way) => {
+      setWaypoints((prev) => [
+        ...prev,
+        [parseFloat(way.longitude), parseFloat(way.latitude)],
+      ]);
+    });
+  }, [assigned]);
 
   useEffect(() => {
     getLiveLocation()
@@ -92,9 +100,10 @@ const Map = ({ assigned }) => {
         <Marker icon={providerIcon} position={currCoords}>
           <Popup>You are here</Popup>
         </Marker>
-        {assigned.map((point) => {
+        {assigned.map((point, i) => {
           return (
             <CircleMarker
+              key={i}
               center={[point.longitude, point.latitude]}
               pathOptions={{ color: "red" }}
               radius={12}
@@ -106,7 +115,7 @@ const Map = ({ assigned }) => {
         <MapRoutingPoints pos={pos} />
       </MapContainer>
     ),
-    [currCoords, waypoints, assigned]
+    [currCoords, waypoints, assigned, pos]
   );
 
   return (

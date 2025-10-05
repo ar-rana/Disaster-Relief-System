@@ -7,6 +7,7 @@ const url = {
   rejectRelief: "provider/rejectRelief",
   getAssignedReliefs: "provider/get/assignments/",
   roadBlock: "provider/report/blockedpath",
+  route: "provider/route",
 };
 
 export async function resolveRelief(payload) {
@@ -95,6 +96,37 @@ export async function roadBlocked() {
     longitude: reqData.longitude
   });
   const path = base_url + url.roadBlock;
+  return axios
+    .post(path, payload, { headers })
+    .then((res) => {
+      return {
+        success: true,
+        data: res.data,
+      };
+    })
+    .catch((err) => {
+      const errMsg = err.response ? err.response.data : err.message;
+      console.log(errMsg);
+      console.log(err);
+      return {
+        success: false,
+        data: errMsg,
+      };
+    });
+}
+
+export async function moveToLocation(reqId) {
+  const headers = {
+    Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    "Content-Type": "application/json",
+  };
+  const reqData = getLiveLocation();
+  const payload = JSON.stringify({
+    latitude: reqData.latitude,
+    longitude: reqData.longitude,
+    reqId: reqId
+  });
+  const path = base_url + url.moveToLocation;
   return axios
     .post(path, payload, { headers })
     .then((res) => {

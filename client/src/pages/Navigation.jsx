@@ -7,6 +7,7 @@ import { Client } from "@stomp/stompjs";
 import {
   getAssignedReliefs,
   getLiveLocation,
+  moveToLocation,
 } from "../api/provider/provider.js";
 import Map from "../components/maps/Map.jsx";
 
@@ -15,6 +16,8 @@ const Navigation = () => {
   const [user, setUser] = useState(null);
   const [hqId, setHqId] = useState(null);
   const stompWSRef = useRef(null);
+
+  const [position, setPosition] = useState([[]]);
 
   const [reliefs, setReliefs] = useState([
     {
@@ -176,11 +179,27 @@ const Navigation = () => {
     }
   };
 
+  const moveHere = async (reqId) => {
+    const data = await moveToLocation(reqId);
+    if (data.success) {
+      data.data.map((points) => {
+        setPosition((prev) => {
+          [
+            ...prev,
+            [parseFloat(points.longitude), parseFloat(points.longitude)],
+          ];
+        });
+      });
+    } else {
+      alert("Failed to fetch location");
+    }
+  };
+
   return (
     <div className="w-full h-auto flex flex-col ml-auto mr-auto gap-1 bg-slate-700">
       <div className="w-[93%] h-[100vh] flex gap-4 ml-auto mr-auto">
         <div className="flex-[3] border-2 m-2">
-          <Map assigned={assigned} />
+          <Map assigned={assigned} pos={position} />
         </div>
         <div className="flex-[1.25] self-center">
           <ReliefMenu data={reliefs} />
@@ -191,7 +210,7 @@ const Navigation = () => {
           Assigned Relief Points
         </p>
         <div className="self-center w-full flex">
-          <AssignedMenu data={assigned} />
+          <AssignedMenu data={assigned} handleRouting={moveHere} />
         </div>
       </div>
       <br />
