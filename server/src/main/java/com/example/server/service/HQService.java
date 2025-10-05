@@ -1,5 +1,6 @@
 package com.example.server.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.example.server.model.HeadQuarters;
@@ -7,6 +8,7 @@ import com.example.server.model.User;
 import com.example.server.model.enums.Keys;
 import com.example.server.repository.HeadQuarterRepository;
 import com.example.server.service.redis.RedisCacheService;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -57,6 +59,24 @@ public class HQService {
         HeadQuarters hq = new HeadQuarters(address, longitude, latitude, resource);
         HeadQuarters savedHq = hqRepository.save(hq);
         cache.setCache(Keys.key(Keys.HQ, savedHq.getHqId()), savedHq, 240);
+
+        String hqsKey = Keys.key(Keys.HQ, "all");
+        List<HeadQuarters> item = cache.getCache(hqsKey, new TypeReference<List<HeadQuarters>>() {});
+        if (item != null) {
+            item.add(savedHq);
+            cache.setCache(hqsKey, item, 300);
+        }
         return "NEW HQ added Successfully, ID: " + savedHq.getHqId();
+    }
+
+    public List<HeadQuarters> getAllHQ() {
+        String key = Keys.key(Keys.HQ, "all");
+        List<HeadQuarters> item = cache.getCache(key, new TypeReference<List<HeadQuarters>>() {});
+        if (item != null) {
+            return item;
+        }
+        List<HeadQuarters> hqs = hqRepository.findAll();
+        cache.setCache(key, hqs, 300);
+        return hqs;
     }
 }

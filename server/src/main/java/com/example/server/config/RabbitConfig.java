@@ -16,6 +16,9 @@ public class RabbitConfig {
     public static final String QUEUE_NAME = "reliefData";
     public static final String EXCHANGE_NAME = "priority";
 
+    public static final String ASSIGNEE_EXCHANGE = "assignees";
+    public static final String RELIEF_NAME = "reliefReq";
+
     @Bean
     public Queue queue() {
         // enable priority-queue
@@ -25,14 +28,25 @@ public class RabbitConfig {
         // durable = true, exclusive & autodelete are fasle
         return new Queue(QUEUE_NAME, true, false, false, args);
     }
-
     @Bean
     public TopicExchange exchange() {
         return new TopicExchange(EXCHANGE_NAME);
     }
-
     @Bean
     public Binding binding(Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with("relief.#"); // mapping to "relief.*"
+    }
+
+    @Bean
+    public Queue queue02() {
+        return new Queue(RELIEF_NAME, true, false, false);
+    }
+    @Bean
+    public TopicExchange exchange02() {
+        return new TopicExchange(ASSIGNEE_EXCHANGE);
+    }
+    @Bean
+    public Binding binding02(Queue queue02, TopicExchange exchange02) {
+        return BindingBuilder.bind(queue02).to(exchange02).with("relief.#"); // mapping to "relief.*"
     }
 }

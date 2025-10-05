@@ -241,6 +241,7 @@
                 test
             </scope>
         </dependency>
+
         <!--		REDIS-->
         <dependency>
             <groupId>
@@ -249,6 +250,24 @@
             <artifactId>
                 spring-boot-starter-data-redis
             </artifactId>
+        </dependency>
+
+        <!--        GRAPHHOPPER (For OpenStreetMaps)-->
+        <dependency>
+    <groupId>com.graphhopper</groupId>
+    <artifactId>graphhopper-reader-osm</artifactId>
+    <version>3.0-pre3</version>
+</dependency>
+        <dependency>
+            <groupId>
+                com.graphhopper
+            </groupId>
+            <artifactId>
+                graphhopper-core
+            </artifactId>
+            <version>
+                10.1
+            </version>
         </dependency>
 
     </dependencies>

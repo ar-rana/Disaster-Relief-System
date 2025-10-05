@@ -1,6 +1,7 @@
 package com.example.server.service.rabbit;
 
 import com.example.server.config.RabbitConfig;
+import com.example.server.model.DTOs.ProviderInfo;
 import com.example.server.model.ReliefReq;
 import com.example.server.model.enums.Criticality;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -48,8 +49,12 @@ public class Producer {
         };
     }
 
-//    PLAIN PRODUCER
-//    public void sendMessage(String message) {
-//        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE_NAME, "relief", message);
-//    }
+    // PLAIN PRODUCER
+    public void sendProviderInfoKey(String key) {
+        rabbitTemplate.convertAndSend(
+                    RabbitConfig.ASSIGNEE_EXCHANGE,
+                    "relief.req",
+                    key
+        );
+    }
 }
