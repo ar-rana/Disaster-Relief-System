@@ -11,6 +11,7 @@ const Navbar = () => {
   const handleLogout = () => {
     window.localStorage.removeItem("token");
     window.localStorage.removeItem("user");
+    window.localStorage.removeItem("hq");
     window.location.reload();
   }
 

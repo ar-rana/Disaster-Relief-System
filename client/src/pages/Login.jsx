@@ -20,7 +20,8 @@ const Login = () => {
     const res = await login(payload);
     if (res.success) {
       window.localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", res.data.user);
+      window.localStorage.setItem("user", res.data.user);
+      window.localStorage.setItem("hq", res.data.hq);
       window.location.href = res.data.redirect;
     } else {
       alert(res.data);

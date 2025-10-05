@@ -12,6 +12,7 @@ import MapRouting from "./MapRouting";
 import MapRoutingPoints from "./MapRoutingPoints";
 import hq_svg from "../../assets/hq_svg.svg";
 import provider_svg from "../../assets/provider_svg.svg";
+import { getLiveLocation, roadBlocked } from "../../api/provider/provider";
 
 const Map = ({ assigned }) => {
   const [map, setMap] = useState(null);
@@ -50,32 +51,26 @@ const Map = ({ assigned }) => {
     map.setView(currCoords, zoom);
   };
 
-  useEffect(() => {
-    let watcher;
-    if ("geolocation" in navigator) {
-      watcher = navigator.geolocation.watchPosition(
-        (pos) => {
-          setCurrCoords([pos.coords.latitude, pos.coords.longitude]);
-        },
-        (err) => {
-          console.error("Error getting location:", err);
-          alert("Location is required");
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0,
-        }
-      );
-    } else {
-      alert("Geolocation not supported by your browser");
-    }
+  const reportRoadBlock = async () => {
+    const data = await roadBlocked();
+    if (data.success) alert("We have reported the Road Block, thank you for you help.");
+  };
 
-    return () => {
-      if (watcher !== undefined) {
-        navigator.geolocation.clearWatch(watcher);
-      }
-    };
+  useEffect(() => {
+    getLiveLocation()
+      .then((data) => {
+        setCurrCoords(data);
+      })
+      .catch((e) => alert("location is required"));
+    const intervalId = setInterval(() => {
+      getLiveLocation()
+        .then((data) => {
+          setCurrCoords(data);
+        })
+        .catch((e) => alert("location is required"));
+    }, 1000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const DisplayMap = useMemo(
@@ -91,7 +86,7 @@ const Map = ({ assigned }) => {
           attribution="© OpenStreetMap"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker icon={headquarterIcon} position={[home[0], home[1]]}>
+        <Marker icon={headquarterIcon} position={home}>
           <Popup>Headquarters</Popup>
         </Marker>
         <Marker icon={providerIcon} position={currCoords}>
@@ -111,7 +106,7 @@ const Map = ({ assigned }) => {
         <MapRoutingPoints pos={pos} />
       </MapContainer>
     ),
-    []
+    [currCoords, waypoints, assigned]
   );
 
   return (
@@ -128,6 +123,12 @@ const Map = ({ assigned }) => {
           onClick={whereAmI}
         >
           ME
+        </button>
+        <button
+          className="px-4 bg-amber-100 border rounded-sm font-semibold active:border-white"
+          onClick={reportRoadBlock}
+        >
+          Report Road Block
         </button>
       </div>
       {DisplayMap}

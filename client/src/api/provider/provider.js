@@ -6,6 +6,7 @@ const url = {
   resolveRelief: "provider/resolveRelief",
   rejectRelief: "provider/rejectRelief",
   getAssignedReliefs: "provider/get/assignments/",
+  roadBlock: "provider/report/blockedpath",
 };
 
 export async function resolveRelief(payload) {
@@ -81,4 +82,48 @@ export async function getAssignedReliefs(username) {
         data: errMsg,
       };
     });
+}
+
+export async function roadBlocked() {
+  const headers = {
+    Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    "Content-Type": "application/json",
+  };
+  const reqData = getLiveLocation();
+  const payload = JSON.stringify({
+    latitude: reqData.latitude,
+    longitude: reqData.longitude
+  });
+  const path = base_url + url.roadBlock;
+  return axios
+    .post(path, payload, { headers })
+    .then((res) => {
+      return {
+        success: true,
+        data: res.data,
+      };
+    })
+    .catch((err) => {
+      const errMsg = err.response ? err.response.data : err.message;
+      console.log(errMsg);
+      console.log(err);
+      return {
+        success: false,
+        data: errMsg,
+      };
+    });
+}
+
+export async function getLiveLocation() {
+  const pos = await new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => resolve(position),
+      (error) => reject(error),
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  });
+
+  const latitude = pos.coords.latitude;
+  const longitude = pos.coords.longitude;
+  return [latitude, longitude]
 }
