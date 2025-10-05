@@ -57,7 +57,7 @@ public class ReliefService {
 
         ReliefReqStatus reliefStatus = new ReliefReqStatus(savedReq.getUid(), ReliefStatus.CREATED);
         ReliefReqStatus savedStatus = statusRepository.save(reliefStatus);
-        cache.setCache(Keys.key(Keys.STATUS, savedStatus.getReliefId()), savedStatus, 240);
+//        cache.setCache(Keys.key(Keys.STATUS, savedStatus.getReliefId()), savedStatus, 240);
 
         String key = Keys.key(Keys.RELIEF, dto.getPoc());
         List<ReliefReq> item = cache.getCache(key, new TypeReference<List<ReliefReq>>() {});
@@ -91,12 +91,21 @@ public class ReliefService {
 
     // ReliefReqStatus
     public ReliefReqStatus getRequestDetail(Long reliefId) {
-        return statusRepository.findById(reliefId).orElse(null);
+        String key = Keys.key(Keys.STATUS, reliefId);
+//        ReliefReqStatus item = cache.getCache(key, ReliefReqStatus.class);
+//        if (item != null) {
+//            return item;
+//        }
+        ReliefReqStatus status = statusRepository.findById(reliefId).orElse(null);
+//        cache.setCache(key, status, 240);
+        return status;
     }
 
     // update ReliefReqStatus
     public ReliefReqStatus updateReliefStatus(ReliefReqStatus req) {
-        return statusRepository.save(req);
+        ReliefReqStatus status = statusRepository.save(req);
+//        cache.setCache(Keys.key(Keys.STATUS, status.getReliefId()), status, 240);
+        return status;
     }
 
     public ReliefReq getReliefRequest(String reliefId) {

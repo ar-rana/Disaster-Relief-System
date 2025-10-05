@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.server.model.DTOs.Coords;
 import com.example.server.model.DTOs.ReliefStatusDTO;
 import com.example.server.model.ReliefReq;
 import com.example.server.model.ReliefReqStatus;
@@ -36,18 +37,17 @@ public class ProviderService {
     @Autowired
     private ReliefService reliefService;
 
+    @Autowired
+    private RoutesService routesService;
+
     private static final String SEARCH_DB = "assigned_reliefs";
 
     public void resolveRelief(ReliefStatusDTO request) {
         ReliefReqStatus status = new ReliefReqStatus(request.getReliefId(), ReliefStatus.COMPLETED);
         status.setDescription(request.getDesc());
-        List<byte[]> lt = new ArrayList<>();
-        for (MultipartFile file: request.getImages()) {
-            try {
-                lt.add(file.getBytes());
-            } catch (IOException e) {
-                log.error("[RELIEF-STATUS] problem converting multipart to bytes");
-            }
+        List<String> lt = new ArrayList<>();
+        for (String file: request.getImages()) {
+            lt.add(file);
         }
         status.setImages(lt);
 
@@ -132,5 +132,9 @@ public class ProviderService {
             log.error("[FIRESTORE] Failed to fetch: {}", ex.getMessage());
         }
         return null;
+    }
+
+    public List<Coords> getSafestRoute(String reqId, Coords fromCoords) {
+        return routesService.getShortestSafePath(reqId, fromCoords);
     }
 }

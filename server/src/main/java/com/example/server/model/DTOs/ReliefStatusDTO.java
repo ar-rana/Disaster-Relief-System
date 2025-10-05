@@ -15,6 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class ReliefStatusDTO {
     private Long reliefId;
-    private List<MultipartFile> images;
+    private List<String> images;
     private String desc;
 }

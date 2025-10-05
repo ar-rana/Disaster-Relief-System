@@ -72,10 +72,12 @@ public class UserService {
         if(authentication.isAuthenticated()) {
             String token = jwtService.generateToken(user.getUsername(), user.getRole());
             UserType role = user.getRole();
+            int hq = user.getHeadQuarters().getHqId();
             Map<String, String> map = new HashMap<>();
             map.put("token", token);
             map.put("role", role.toString());
             map.put("user", user.getUsername());
+            map.put("hq", String.valueOf(hq));
             return map;
         } else
             return null;
@@ -96,8 +98,11 @@ public class UserService {
         return null;
     }
 
-
     public User getRandomProvider() {
         return userRepository.findRandomProvider();
+    }
+
+    public User getRandomProviderFromHq(int hqId) {
+        return userRepository.findRandomProviderByHeadQuarters(hqId);
     }
 }

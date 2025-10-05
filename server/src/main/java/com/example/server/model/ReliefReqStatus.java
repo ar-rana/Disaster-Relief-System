@@ -39,10 +39,12 @@ public class ReliefReqStatus {
             joinColumns = @JoinColumn(name = "relief_id")
     )
     @Column(name = "image")
-    private List<byte[]> images;
+    private List<String> images;
 
     @Column(nullable = false)
     private String description;
+
+    private Integer hqId;
 
     public ReliefReqStatus(Long reliefId, ReliefStatus status) {
         this.reliefId = reliefId;
