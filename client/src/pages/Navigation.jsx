@@ -19,87 +19,8 @@ const Navigation = () => {
 
   const [position, setPosition] = useState([[]]);
 
-  const [reliefs, setReliefs] = useState([
-    {
-      uid: 1,
-      criticality: "HIGH",
-      lat: "30.7046",
-      lon: "76.7179",
-      description:
-        "Building collapsed, people trapped inside, need urgent rescue.",
-      poc: "9876543210",
-      name: "Rajesh Kumar",
-    },
-    {
-      uid: 2,
-      criticality: "MODERATE",
-      lat: "28.7041",
-      lon: "77.1025",
-      description:
-        "No electricity or water for 2 days, family with children needs supplies.",
-      poc: "9123456780",
-      name: "Anita Sharma",
-    },
-    {
-      uid: 3,
-      criticality: "BASIC",
-      lat: "19.0760",
-      lon: "72.8777",
-      description:
-        "Flooding on ground floor, need evacuation support if water level rises.",
-      poc: "9012345678",
-      name: "Kaju Vaju",
-    },
-    {
-      uid: 4,
-      criticality: "HIGH",
-      lat: "15.2993",
-      lon: "74.1240",
-      description:
-        "Severe landslide, people injured and stuck, need immediate medical help.",
-      poc: "9823456712",
-      name: "Lakshmi Rao",
-    },
-    {
-      uid: 5,
-      criticality: "MODERATE",
-      lat: "22.5726",
-      lon: "88.3639",
-      description:
-        "Elderly person with breathing issues, medicines finished, need urgent delivery.",
-      poc: "7001234567",
-      name: "Sandeep Ghosh",
-    },
-  ]);
-  const [assigned, setAssigned] = useState([
-    {
-      name: "hello",
-      uid: 1,
-      description: "hello",
-      criticality: "MODERATE",
-      longitude: "20.3636391",
-      latitude: "85.8152384",
-      poc: "0987654321",
-    },
-    {
-      name: "hello",
-      uid: 2,
-      description: "hello",
-      criticality: "MODERATE",
-      longitude: "20.3536391",
-      latitude: "85.7152384",
-      poc: "0987654321",
-    },
-    {
-      name: "hello 2",
-      uid: 3,
-      description: "hello world",
-      criticality: "MODERATE",
-      longitude: "20.373321",
-      latitude: "85.8452456",
-      poc: "1234567890",
-    },
-  ]);
+  const [reliefs, setReliefs] = useState([]);
+  const [assigned, setAssigned] = useState([]);
 
   useEffect(() => {
     const socket = new SockJS("http://localhost:8080/ws");
